@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "464548232182",
+    "project_id": "plantare-42ace",
+    "storage_bucket": "plantare-42ace.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:464548232182:android:a9b18d98489a76b42ee5d7",
+        "android_client_info": {
+          "package_name": "pl.edu.pja.plantare"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAfBWBh_hdnrDIrC5czFYrPcrbPgGpA-cU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
