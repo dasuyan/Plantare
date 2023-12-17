@@ -2,20 +2,20 @@ package pl.edu.pja.plantare.model.service.impl
 
 import android.net.Uri
 import androidx.core.net.toUri
-import pl.edu.pja.plantare.model.Plant
-import pl.edu.pja.plantare.model.service.AccountService
-import pl.edu.pja.plantare.model.service.StorageService
-import pl.edu.pja.plantare.model.service.trace
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.dataObjects
 import com.google.firebase.firestore.toObject
 import com.google.firebase.storage.StorageReference
+import javax.inject.Inject
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.coroutineScope
-import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.tasks.await
+import pl.edu.pja.plantare.model.Plant
+import pl.edu.pja.plantare.model.service.AccountService
+import pl.edu.pja.plantare.model.service.StorageService
+import pl.edu.pja.plantare.model.service.trace
 
 class StorageServiceImpl
 @Inject
@@ -23,8 +23,7 @@ constructor(
   private val firestore: FirebaseFirestore,
   private val auth: AccountService,
   private val storageRef: StorageReference
-) :
-    StorageService {
+) : StorageService {
 
   @OptIn(ExperimentalCoroutinesApi::class)
   override val plants: Flow<List<Plant>>
@@ -64,9 +63,7 @@ constructor(
         ref.putFile(file).await()
 
         val downloadUri = ref.downloadUrl.await()
-        downloadUri?.let {
-          plant.url = it.toString()
-        }
+        downloadUri?.let { plant.url = it.toString() }
 
         downloadUri
       } catch (e: Exception) {

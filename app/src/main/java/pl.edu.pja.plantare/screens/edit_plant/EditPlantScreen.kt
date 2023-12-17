@@ -28,35 +28,32 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
-import pl.edu.pja.plantare.BuildConfig
-import pl.edu.pja.plantare.R.drawable as AppIcon
-import pl.edu.pja.plantare.R.string as AppText
-import pl.edu.pja.plantare.common.ext.card
-import pl.edu.pja.plantare.common.ext.fieldModifier
-import pl.edu.pja.plantare.common.ext.spacer
-import pl.edu.pja.plantare.common.ext.toolbarActions
-import pl.edu.pja.plantare.model.Priority
-import pl.edu.pja.plantare.model.Plant
-import pl.edu.pja.plantare.theme.PlantareTheme
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
-import pl.edu.pja.plantare.common.composable.ActionToolbar
-import pl.edu.pja.plantare.common.composable.BasicField
-import pl.edu.pja.plantare.common.composable.CardSelector
-import pl.edu.pja.plantare.common.composable.RegularCardEditor
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 import java.util.Objects
+import pl.edu.pja.plantare.BuildConfig
+import pl.edu.pja.plantare.R.drawable as AppIcon
+import pl.edu.pja.plantare.R.string as AppText
+import pl.edu.pja.plantare.common.composable.ActionToolbar
+import pl.edu.pja.plantare.common.composable.BasicField
+import pl.edu.pja.plantare.common.composable.CardSelector
+import pl.edu.pja.plantare.common.composable.RegularCardEditor
+import pl.edu.pja.plantare.common.ext.card
+import pl.edu.pja.plantare.common.ext.fieldModifier
+import pl.edu.pja.plantare.common.ext.spacer
+import pl.edu.pja.plantare.common.ext.toolbarActions
+import pl.edu.pja.plantare.model.Plant
+import pl.edu.pja.plantare.model.Priority
+import pl.edu.pja.plantare.theme.PlantareTheme
 
 @Composable
 @ExperimentalMaterialApi
-fun EditPlantScreen(
-  popUpScreen: () -> Unit,
-  viewModel: EditPlantViewModel = hiltViewModel()
-) {
+fun EditPlantScreen(popUpScreen: () -> Unit, viewModel: EditPlantViewModel = hiltViewModel()) {
   val plant by viewModel.plant
   val loading by viewModel.loading
   val activity = LocalContext.current as AppCompatActivity
@@ -76,9 +73,7 @@ fun EditPlantScreen(
 
   if (loading) {
     Box(
-      modifier = Modifier
-        .fillMaxSize()
-        .background(Color.Gray.copy(alpha = 0.3f)),
+      modifier = Modifier.fillMaxSize().background(Color.Gray.copy(alpha = 0.3f)),
       contentAlignment = Alignment.Center
     ) {
       CircularProgressIndicator(color = MaterialTheme.colors.onBackground)
@@ -102,10 +97,7 @@ fun EditPlantScreenContent(
   activity: AppCompatActivity?
 ) {
   Column(
-    modifier = modifier
-      .fillMaxWidth()
-      .fillMaxHeight()
-      .verticalScroll(rememberScrollState()),
+    modifier = modifier.fillMaxWidth().fillMaxHeight().verticalScroll(rememberScrollState()),
     horizontalAlignment = Alignment.CenterHorizontally
   ) {
     ActionToolbar(
@@ -118,8 +110,7 @@ fun EditPlantScreenContent(
     Spacer(modifier = Modifier.spacer())
     AsyncImage(
       model = plant.url,
-      modifier = Modifier
-        .padding(16.dp, 8.dp),
+      modifier = Modifier.padding(16.dp, 8.dp),
       contentDescription = null
     )
     PhotoTaker(onUrlChange)
@@ -138,31 +129,26 @@ fun EditPlantScreenContent(
   }
 }
 
-
 fun Context.createImageFile(): File {
   val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.ENGLISH).format(Date())
   val imageFileName = "JPEG_" + timeStamp + "_"
-  return File.createTempFile(
-    imageFileName,
-    ".jpg",
-    externalCacheDir
-  )
+  return File.createTempFile(imageFileName, ".jpg", externalCacheDir)
 }
 
 @Composable
 fun PhotoTaker(onUrlChange: (String) -> Unit) {
   val context = LocalContext.current
   val file = context.createImageFile()
-  val uri = file.let {
-    FileProvider.getUriForFile(
-      Objects.requireNonNull(context),
-      BuildConfig.APPLICATION_ID + ".provider", it
-    )
-  }
+  val uri =
+    file.let {
+      FileProvider.getUriForFile(
+        Objects.requireNonNull(context),
+        BuildConfig.APPLICATION_ID + ".provider",
+        it
+      )
+    }
 
-  var capturedImageUri by remember {
-    mutableStateOf<Uri>(Uri.EMPTY)
-  }
+  var capturedImageUri by remember { mutableStateOf<Uri>(Uri.EMPTY) }
 
   val cameraLauncher =
     rememberLauncherForActivityResult(ActivityResultContracts.TakePicture()) {
@@ -171,32 +157,31 @@ fun PhotoTaker(onUrlChange: (String) -> Unit) {
       }
     }
 
-  val permissionLauncher = rememberLauncherForActivityResult(
-    ActivityResultContracts.RequestPermission()
-  ) {
-    if (it) {
-      Toast.makeText(context, "Permission Granted", Toast.LENGTH_SHORT).show()
-      cameraLauncher.launch(uri)
-    } else {
-      Toast.makeText(context, "Permission Denied", Toast.LENGTH_SHORT).show()
-    }
-  }
-
-  Column(
-    Modifier
-      .fillMaxSize()
-      .padding(10.dp),
-    horizontalAlignment = Alignment.CenterHorizontally
-  ) {
-    Button(onClick = {
-      val permissionCheckResult =
-        ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA)
-      if (permissionCheckResult == PackageManager.PERMISSION_GRANTED) {
+  val permissionLauncher =
+    rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) {
+      if (it) {
+        Toast.makeText(context, "Permission Granted", Toast.LENGTH_SHORT).show()
         cameraLauncher.launch(uri)
       } else {
-        permissionLauncher.launch(Manifest.permission.CAMERA)
+        Toast.makeText(context, "Permission Denied", Toast.LENGTH_SHORT).show()
       }
-    }) {
+    }
+
+  Column(
+    Modifier.fillMaxSize().padding(10.dp),
+    horizontalAlignment = Alignment.CenterHorizontally
+  ) {
+    Button(
+      onClick = {
+        val permissionCheckResult =
+          ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA)
+        if (permissionCheckResult == PackageManager.PERMISSION_GRANTED) {
+          cameraLauncher.launch(uri)
+        } else {
+          permissionLauncher.launch(Manifest.permission.CAMERA)
+        }
+      }
+    ) {
       Text(text = "Capture Image From Camera")
     }
   }
@@ -265,23 +250,19 @@ private fun showTimePicker(activity: AppCompatActivity?, onTimeChange: (Int, Int
 @ExperimentalMaterialApi
 @Composable
 fun EditPlantScreenPreview() {
-  val plant = Plant(
-    title = "Plant title",
-    description = "Plant description",
-    flag = true
-  )
+  val plant = Plant(title = "Plant title", description = "Plant description", flag = true)
 
   PlantareTheme {
     EditPlantScreenContent(
       plant = plant,
-      onDoneClick = { },
-      onTitleChange = { },
-      onDescriptionChange = { },
-      onUrlChange = { },
-      onDateChange = { },
+      onDoneClick = {},
+      onTitleChange = {},
+      onDescriptionChange = {},
+      onUrlChange = {},
+      onDateChange = {},
       onTimeChange = { _, _ -> },
-      onPriorityChange = { },
-      onFlagToggle = { },
+      onPriorityChange = {},
+      onFlagToggle = {},
       activity = null
     )
   }

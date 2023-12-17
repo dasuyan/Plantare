@@ -1,7 +1,7 @@
 package pl.edu.pja.plantare.model.service
 
-import pl.edu.pja.plantare.model.User
 import kotlinx.coroutines.flow.Flow
+import pl.edu.pja.plantare.model.User
 
 interface AccountService {
   val currentUserId: String
@@ -10,9 +10,14 @@ interface AccountService {
   val currentUser: Flow<User>
 
   suspend fun authenticate(email: String, password: String)
+
   suspend fun sendRecoveryEmail(email: String)
+
   suspend fun createAnonymousAccount()
+
   suspend fun linkAccount(email: String, password: String)
+
   suspend fun deleteAccount()
+
   suspend fun signOut()
 }

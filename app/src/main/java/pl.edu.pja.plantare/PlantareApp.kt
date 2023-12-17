@@ -20,21 +20,21 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import pl.edu.pja.plantare.common.composable.PermissionDialog
-import pl.edu.pja.plantare.common.composable.RationaleDialog
-import pl.edu.pja.plantare.common.snackbar.SnackbarManager
-import pl.edu.pja.plantare.screens.login.LoginScreen
-import pl.edu.pja.plantare.screens.settings.SettingsScreen
-import pl.edu.pja.plantare.screens.sign_up.SignUpScreen
-import pl.edu.pja.plantare.screens.splash.SplashScreen
-import pl.edu.pja.plantare.screens.plants.PlantsScreen
-import pl.edu.pja.plantare.theme.PlantareTheme
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import com.google.accompanist.permissions.shouldShowRationale
 import kotlinx.coroutines.CoroutineScope
+import pl.edu.pja.plantare.common.composable.PermissionDialog
+import pl.edu.pja.plantare.common.composable.RationaleDialog
+import pl.edu.pja.plantare.common.snackbar.SnackbarManager
 import pl.edu.pja.plantare.screens.edit_plant.EditPlantScreen
+import pl.edu.pja.plantare.screens.login.LoginScreen
+import pl.edu.pja.plantare.screens.plants.PlantsScreen
+import pl.edu.pja.plantare.screens.settings.SettingsScreen
+import pl.edu.pja.plantare.screens.sign_up.SignUpScreen
+import pl.edu.pja.plantare.screens.splash.SplashScreen
+import pl.edu.pja.plantare.theme.PlantareTheme
 
 @Composable
 @ExperimentalMaterialApi
@@ -127,13 +127,14 @@ fun NavGraphBuilder.plantareGraph(appState: PlantareAppState) {
 
   composable(
     route = "$EDIT_PLANT_SCREEN$PLANT_ID_ARG",
-    arguments = listOf(navArgument(PLANT_ID) {
-      nullable = true
-      defaultValue = null
-    })
+    arguments =
+      listOf(
+        navArgument(PLANT_ID) {
+          nullable = true
+          defaultValue = null
+        }
+      )
   ) {
-    EditPlantScreen(
-      popUpScreen = { appState.popUp() }
-    )
+    EditPlantScreen(popUpScreen = { appState.popUp() })
   }
 }

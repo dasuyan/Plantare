@@ -1,8 +1,5 @@
 package pl.edu.pja.plantare.model.service.impl
 
-import pl.edu.pja.plantare.model.User
-import pl.edu.pja.plantare.model.service.AccountService
-import pl.edu.pja.plantare.model.service.trace
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import javax.inject.Inject
@@ -10,6 +7,9 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
+import pl.edu.pja.plantare.model.User
+import pl.edu.pja.plantare.model.service.AccountService
+import pl.edu.pja.plantare.model.service.trace
 
 class AccountServiceImpl @Inject constructor(private val auth: FirebaseAuth) : AccountService {
 

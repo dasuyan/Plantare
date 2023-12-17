@@ -14,11 +14,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import kotlinx.coroutines.delay
 import pl.edu.pja.plantare.R.string as AppText
 import pl.edu.pja.plantare.common.composable.BasicButton
 import pl.edu.pja.plantare.common.ext.basicButton
 import pl.edu.pja.plantare.theme.PlantareTheme
-import kotlinx.coroutines.delay
 
 private const val SPLASH_TIMEOUT = 1000L
 
@@ -41,11 +41,11 @@ fun SplashScreenContent(
 ) {
   Column(
     modifier =
-    modifier
-      .fillMaxWidth()
-      .fillMaxHeight()
-      .background(color = MaterialTheme.colors.background)
-      .verticalScroll(rememberScrollState()),
+      modifier
+        .fillMaxWidth()
+        .fillMaxHeight()
+        .background(color = MaterialTheme.colors.background)
+        .verticalScroll(rememberScrollState()),
     verticalArrangement = Arrangement.Center,
     horizontalAlignment = Alignment.CenterHorizontally
   ) {
@@ -67,10 +67,5 @@ fun SplashScreenContent(
 @Preview(showBackground = true)
 @Composable
 fun SplashScreenPreview() {
-  PlantareTheme {
-    SplashScreenContent(
-      onAppStart = { },
-      shouldShowError = true
-    )
-  }
+  PlantareTheme { SplashScreenContent(onAppStart = {}, shouldShowError = true) }
 }

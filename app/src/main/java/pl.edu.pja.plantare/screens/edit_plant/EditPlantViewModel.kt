@@ -2,19 +2,21 @@ package pl.edu.pja.plantare.screens.edit_plant
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
+import dagger.hilt.android.lifecycle.HiltViewModel
+import java.text.SimpleDateFormat
+import java.util.*
+import javax.inject.Inject
+import pl.edu.pja.plantare.PLANT_ID
 import pl.edu.pja.plantare.common.ext.idFromParameter
 import pl.edu.pja.plantare.model.Plant
 import pl.edu.pja.plantare.model.service.LogService
 import pl.edu.pja.plantare.model.service.StorageService
 import pl.edu.pja.plantare.screens.PlantareViewModel
-import dagger.hilt.android.lifecycle.HiltViewModel
-import pl.edu.pja.plantare.PLANT_ID
-import java.text.SimpleDateFormat
-import java.util.*
-import javax.inject.Inject
 
 @HiltViewModel
-class EditPlantViewModel @Inject constructor(
+class EditPlantViewModel
+@Inject
+constructor(
   savedStateHandle: SavedStateHandle,
   logService: LogService,
   private val storageService: StorageService
@@ -23,12 +25,11 @@ class EditPlantViewModel @Inject constructor(
   val plant = mutableStateOf(Plant())
   private var withPicture = false
   val loading = mutableStateOf(false)
+
   init {
     val plantId = savedStateHandle.get<String>(PLANT_ID)
     if (plantId != null) {
-      launchCatching {
-        plant.value = storageService.getPlant(plantId.idFromParameter()) ?: Plant()
-      }
+      launchCatching { plant.value = storageService.getPlant(plantId.idFromParameter()) ?: Plant() }
     }
   }
 

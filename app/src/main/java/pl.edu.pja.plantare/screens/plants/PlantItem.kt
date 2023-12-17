@@ -9,6 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import java.lang.StringBuilder
 import pl.edu.pja.plantare.R.drawable as AppIcon
 import pl.edu.pja.plantare.common.composable.DropdownContextMenu
 import pl.edu.pja.plantare.common.ext.contextMenu
@@ -16,7 +17,6 @@ import pl.edu.pja.plantare.common.ext.hasDueDate
 import pl.edu.pja.plantare.common.ext.hasDueTime
 import pl.edu.pja.plantare.model.Plant
 import pl.edu.pja.plantare.theme.DarkOrange
-import java.lang.StringBuilder
 
 @Composable
 @ExperimentalMaterialApi

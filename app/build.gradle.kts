@@ -6,7 +6,7 @@ plugins {
     id("com.google.firebase.crashlytics")
     id("com.google.firebase.firebase-perf")
     id("dagger.hilt.android.plugin")
-    id("com.ncorti.ktfmt.gradle") version "0.10.0"
+    id("com.ncorti.ktfmt.gradle") version "0.15.1"
 }
 
 android {
@@ -55,10 +55,6 @@ android {
     }
 }
 
-ktfmt {
-    googleStyle()
-}
-
 dependencies {
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
@@ -100,4 +96,8 @@ dependencies {
     androidTestImplementation("com.google.truth:truth:1.1.3")
     kspAndroidTest("com.google.dagger:hilt-compiler:2.47")
     debugImplementation("androidx.compose.ui:ui-tooling")
+}
+
+ktfmt {
+    googleStyle()
 }

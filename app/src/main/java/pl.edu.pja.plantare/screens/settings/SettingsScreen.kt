@@ -1,26 +1,35 @@
 package pl.edu.pja.plantare.screens.settings
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.*
-import androidx.compose.runtime.*
+import androidx.compose.material.AlertDialog
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
-import pl.edu.pja.plantare.R.drawable as AppIcon
-import pl.edu.pja.plantare.R.string as AppText
-import pl.edu.pja.plantare.common.composable.*
-import pl.edu.pja.plantare.common.ext.card
-import pl.edu.pja.plantare.common.ext.spacer
-import pl.edu.pja.plantare.theme.PlantareTheme
 import pl.edu.pja.plantare.common.composable.BasicToolbar
 import pl.edu.pja.plantare.common.composable.DangerousCardEditor
 import pl.edu.pja.plantare.common.composable.DialogCancelButton
 import pl.edu.pja.plantare.common.composable.DialogConfirmButton
 import pl.edu.pja.plantare.common.composable.RegularCardEditor
+import pl.edu.pja.plantare.common.ext.card
+import pl.edu.pja.plantare.common.ext.spacer
+import pl.edu.pja.plantare.theme.PlantareTheme
+import pl.edu.pja.plantare.R.drawable as AppIcon
+import pl.edu.pja.plantare.R.string as AppText
 
 @ExperimentalMaterialApi
 @Composable
@@ -43,18 +52,15 @@ fun SettingsScreen(
 @ExperimentalMaterialApi
 @Composable
 fun SettingsScreenContent(
-    modifier: Modifier = Modifier,
-    uiState: SettingsUiState,
-    onLoginClick: () -> Unit,
-    onSignUpClick: () -> Unit,
-    onSignOutClick: () -> Unit,
-    onDeleteMyAccountClick: () -> Unit
+  modifier: Modifier = Modifier,
+  uiState: SettingsUiState,
+  onLoginClick: () -> Unit,
+  onSignUpClick: () -> Unit,
+  onSignOutClick: () -> Unit,
+  onDeleteMyAccountClick: () -> Unit
 ) {
   Column(
-    modifier = modifier
-      .fillMaxWidth()
-      .fillMaxHeight()
-      .verticalScroll(rememberScrollState()),
+    modifier = modifier.fillMaxWidth().fillMaxHeight().verticalScroll(rememberScrollState()),
     horizontalAlignment = Alignment.CenterHorizontally
   ) {
     BasicToolbar(AppText.settings)
@@ -62,9 +68,7 @@ fun SettingsScreenContent(
     Spacer(modifier = Modifier.spacer())
 
     if (uiState.isAnonymousAccount) {
-      RegularCardEditor(AppText.sign_in, AppIcon.ic_sign_in, "", Modifier.card()) {
-        onLoginClick()
-      }
+      RegularCardEditor(AppText.sign_in, AppIcon.ic_sign_in, "", Modifier.card()) { onLoginClick() }
 
       RegularCardEditor(AppText.create_account, AppIcon.ic_create_account, "", Modifier.card()) {
         onSignUpClick()
@@ -140,10 +144,10 @@ fun SettingsScreenPreview() {
   PlantareTheme {
     SettingsScreenContent(
       uiState = uiState,
-      onLoginClick = { },
-      onSignUpClick = { },
-      onSignOutClick = { },
-      onDeleteMyAccountClick = { }
+      onLoginClick = {},
+      onSignUpClick = {},
+      onSignOutClick = {},
+      onDeleteMyAccountClick = {}
     )
   }
 }

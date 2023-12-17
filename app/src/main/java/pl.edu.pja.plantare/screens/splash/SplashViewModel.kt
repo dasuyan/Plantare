@@ -1,18 +1,20 @@
 package pl.edu.pja.plantare.screens.splash
 
 import androidx.compose.runtime.mutableStateOf
-import pl.edu.pja.plantare.SPLASH_SCREEN
+import com.google.firebase.auth.FirebaseAuthException
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import pl.edu.pja.plantare.PLANTS_SCREEN
+import pl.edu.pja.plantare.SPLASH_SCREEN
 import pl.edu.pja.plantare.model.service.AccountService
 import pl.edu.pja.plantare.model.service.ConfigurationService
 import pl.edu.pja.plantare.model.service.LogService
 import pl.edu.pja.plantare.screens.PlantareViewModel
-import com.google.firebase.auth.FirebaseAuthException
-import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 
 @HiltViewModel
-class SplashViewModel @Inject constructor(
+class SplashViewModel
+@Inject
+constructor(
   configurationService: ConfigurationService,
   private val accountService: AccountService,
   logService: LogService

@@ -4,11 +4,11 @@ import android.content.res.Resources
 import androidx.compose.material.ScaffoldState
 import androidx.compose.runtime.Stable
 import androidx.navigation.NavHostController
-import pl.edu.pja.plantare.common.snackbar.SnackbarManager
-import pl.edu.pja.plantare.common.snackbar.SnackbarMessage.Companion.toMessage
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.launch
+import pl.edu.pja.plantare.common.snackbar.SnackbarManager
+import pl.edu.pja.plantare.common.snackbar.SnackbarMessage.Companion.toMessage
 
 @Stable
 class PlantareAppState(

@@ -1,15 +1,15 @@
 package pl.edu.pja.plantare.model.service.impl
 
-import pl.edu.pja.plantare.BuildConfig
-import pl.edu.pja.plantare.R.xml as AppConfig
-import pl.edu.pja.plantare.model.service.ConfigurationService
-import pl.edu.pja.plantare.model.service.trace
 import com.google.firebase.Firebase
 import com.google.firebase.remoteconfig.get
 import com.google.firebase.remoteconfig.remoteConfig
 import com.google.firebase.remoteconfig.remoteConfigSettings
 import javax.inject.Inject
 import kotlinx.coroutines.tasks.await
+import pl.edu.pja.plantare.BuildConfig
+import pl.edu.pja.plantare.R.xml as AppConfig
+import pl.edu.pja.plantare.model.service.ConfigurationService
+import pl.edu.pja.plantare.model.service.trace
 
 class ConfigurationServiceImpl @Inject constructor() : ConfigurationService {
   private val remoteConfig

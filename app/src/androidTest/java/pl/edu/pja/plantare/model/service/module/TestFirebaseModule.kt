@@ -16,11 +16,11 @@ limitations under the License.
 
 package pl.edu.pja.plantare.model.service.module
 
+import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
-import com.google.firebase.Firebase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.components.SingletonComponent
@@ -32,6 +32,7 @@ object TestFirebaseModule {
   private const val HOST = "10.0.2.2"
   private const val AUTH_PORT = 9099
   private const val FIRESTORE_PORT = 8080
+
   @Provides fun auth(): FirebaseAuth = Firebase.auth.also { it.useEmulator(HOST, AUTH_PORT) }
 
   @Provides

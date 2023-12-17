@@ -1,19 +1,21 @@
 package pl.edu.pja.plantare.screens.plants
 
 import androidx.compose.runtime.mutableStateOf
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
+import pl.edu.pja.plantare.EDIT_PLANT_SCREEN
+import pl.edu.pja.plantare.PLANT_ID
 import pl.edu.pja.plantare.SETTINGS_SCREEN
 import pl.edu.pja.plantare.model.Plant
 import pl.edu.pja.plantare.model.service.ConfigurationService
 import pl.edu.pja.plantare.model.service.LogService
 import pl.edu.pja.plantare.model.service.StorageService
 import pl.edu.pja.plantare.screens.PlantareViewModel
-import dagger.hilt.android.lifecycle.HiltViewModel
-import pl.edu.pja.plantare.EDIT_PLANT_SCREEN
-import pl.edu.pja.plantare.PLANT_ID
-import javax.inject.Inject
 
 @HiltViewModel
-class PlantsViewModel @Inject constructor(
+class PlantsViewModel
+@Inject
+constructor(
   logService: LogService,
   private val storageService: StorageService,
   private val configurationService: ConfigurationService

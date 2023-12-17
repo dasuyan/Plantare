@@ -16,8 +16,6 @@ limitations under the License.
 
 package pl.edu.pja.plantare
 
-import pl.edu.pja.plantare.model.Plant
-import pl.edu.pja.plantare.model.service.StorageService
 import com.google.common.truth.Truth.assertThat
 import com.google.firebase.firestore.FirebaseFirestore
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -30,6 +28,8 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import pl.edu.pja.plantare.model.Plant
+import pl.edu.pja.plantare.model.service.StorageService
 
 @HiltAndroidTest
 class AwesomeTest {

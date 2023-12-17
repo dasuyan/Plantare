@@ -1,6 +1,8 @@
 package pl.edu.pja.plantare.screens.login
 
 import androidx.compose.runtime.mutableStateOf
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import pl.edu.pja.plantare.LOGIN_SCREEN
 import pl.edu.pja.plantare.R.string as AppText
 import pl.edu.pja.plantare.SETTINGS_SCREEN
@@ -9,19 +11,18 @@ import pl.edu.pja.plantare.common.snackbar.SnackbarManager
 import pl.edu.pja.plantare.model.service.AccountService
 import pl.edu.pja.plantare.model.service.LogService
 import pl.edu.pja.plantare.screens.PlantareViewModel
-import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 
 @HiltViewModel
-class LoginViewModel @Inject constructor(
-  private val accountService: AccountService,
-  logService: LogService
-) : PlantareViewModel(logService) {
+class LoginViewModel
+@Inject
+constructor(private val accountService: AccountService, logService: LogService) :
+  PlantareViewModel(logService) {
   var uiState = mutableStateOf(LoginUiState())
     private set
 
   private val email
     get() = uiState.value.email
+
   private val password
     get() = uiState.value.password
 

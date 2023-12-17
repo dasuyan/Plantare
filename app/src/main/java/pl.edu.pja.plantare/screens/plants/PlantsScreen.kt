@@ -23,10 +23,7 @@ import pl.edu.pja.plantare.theme.PlantareTheme
 
 @Composable
 @ExperimentalMaterialApi
-fun PlantsScreen(
-  openScreen: (String) -> Unit,
-  viewModel: PlantsViewModel = hiltViewModel()
-) {
+fun PlantsScreen(openScreen: (String) -> Unit, viewModel: PlantsViewModel = hiltViewModel()) {
   val plants = viewModel.plants.collectAsStateWithLifecycle(emptyList())
   val options by viewModel.options
 
@@ -68,9 +65,7 @@ fun PlantsScreenContent(
       }
     }
   ) {
-    Column(modifier = Modifier
-      .fillMaxWidth()
-      .fillMaxHeight()) {
+    Column(modifier = Modifier.fillMaxWidth().fillMaxHeight()) {
       ActionToolbar(
         title = AppText.plants,
         modifier = Modifier.toolbarActions(),
@@ -98,11 +93,7 @@ fun PlantsScreenContent(
 @ExperimentalMaterialApi
 @Composable
 fun PlantsScreenPreview() {
-  val plant = Plant(
-    title = "Plant title",
-    flag = true,
-    completed = true
-  )
+  val plant = Plant(title = "Plant title", flag = true, completed = true)
 
   val options = PlantActionOption.getOptions(hasEditOption = true)
 
@@ -110,11 +101,11 @@ fun PlantsScreenPreview() {
     PlantsScreenContent(
       plants = listOf(plant),
       options = options,
-      onAddClick = { },
-      onSettingsClick = { },
-      onPlantCheckChange = { },
+      onAddClick = {},
+      onSettingsClick = {},
+      onPlantCheckChange = {},
       onPlantActionClick = { _, _, _ -> },
-      openScreen = { }
+      openScreen = {}
     )
   }
 }

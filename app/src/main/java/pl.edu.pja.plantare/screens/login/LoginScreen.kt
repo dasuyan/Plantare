@@ -1,6 +1,9 @@
 package pl.edu.pja.plantare.screens.login
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
@@ -9,17 +12,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
-import pl.edu.pja.plantare.R.string as AppText
-import pl.edu.pja.plantare.common.composable.*
-import pl.edu.pja.plantare.common.ext.basicButton
-import pl.edu.pja.plantare.common.ext.fieldModifier
-import pl.edu.pja.plantare.common.ext.textButton
-import pl.edu.pja.plantare.theme.PlantareTheme
 import pl.edu.pja.plantare.common.composable.BasicButton
 import pl.edu.pja.plantare.common.composable.BasicTextButton
 import pl.edu.pja.plantare.common.composable.BasicToolbar
 import pl.edu.pja.plantare.common.composable.EmailField
 import pl.edu.pja.plantare.common.composable.PasswordField
+import pl.edu.pja.plantare.common.ext.basicButton
+import pl.edu.pja.plantare.common.ext.fieldModifier
+import pl.edu.pja.plantare.common.ext.textButton
+import pl.edu.pja.plantare.theme.PlantareTheme
+import pl.edu.pja.plantare.R.string as AppText
 
 @Composable
 fun LoginScreen(
@@ -39,20 +41,17 @@ fun LoginScreen(
 
 @Composable
 fun LoginScreenContent(
-    modifier: Modifier = Modifier,
-    uiState: LoginUiState,
-    onEmailChange: (String) -> Unit,
-    onPasswordChange: (String) -> Unit,
-    onSignInClick: () -> Unit,
-    onForgotPasswordClick: () -> Unit
+  modifier: Modifier = Modifier,
+  uiState: LoginUiState,
+  onEmailChange: (String) -> Unit,
+  onPasswordChange: (String) -> Unit,
+  onSignInClick: () -> Unit,
+  onForgotPasswordClick: () -> Unit
 ) {
   BasicToolbar(AppText.login_details)
 
   Column(
-    modifier = modifier
-      .fillMaxWidth()
-      .fillMaxHeight()
-      .verticalScroll(rememberScrollState()),
+    modifier = modifier.fillMaxWidth().fillMaxHeight().verticalScroll(rememberScrollState()),
     verticalArrangement = Arrangement.Center,
     horizontalAlignment = Alignment.CenterHorizontally
   ) {
@@ -61,26 +60,22 @@ fun LoginScreenContent(
 
     BasicButton(AppText.sign_in, Modifier.basicButton()) { onSignInClick() }
 
-    BasicTextButton(AppText.forgot_password, Modifier.textButton()) {
-      onForgotPasswordClick()
-    }
+    BasicTextButton(AppText.forgot_password, Modifier.textButton()) { onForgotPasswordClick() }
   }
 }
 
 @Preview(showBackground = true)
 @Composable
 fun LoginScreenPreview() {
-  val uiState = LoginUiState(
-    email = "email@test.com"
-  )
+  val uiState = LoginUiState(email = "email@test.com")
 
   PlantareTheme {
     LoginScreenContent(
       uiState = uiState,
-      onEmailChange = { },
-      onPasswordChange = { },
-      onSignInClick = { },
-      onForgotPasswordClick = { }
+      onEmailChange = {},
+      onPasswordChange = {},
+      onSignInClick = {},
+      onForgotPasswordClick = {}
     )
   }
 }
