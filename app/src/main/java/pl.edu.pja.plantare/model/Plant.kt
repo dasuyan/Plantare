@@ -7,9 +7,11 @@ data class Plant(
   val title: String = "",
   val priority: String = "",
   val dueDate: String = "",
-  val dueTime: String = "",
+  val dueTime: String = "" ,
+  val wateringFrequencyDays: String = "",
+  val lastWateringDate: String = "",
   val description: String = "",
-  var url: String = "",
+  var imageUri: String = "",
   val flag: Boolean = false,
   val completed: Boolean = false,
   val userId: String = ""

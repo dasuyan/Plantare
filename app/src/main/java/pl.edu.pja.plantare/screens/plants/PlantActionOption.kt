@@ -1,9 +1,9 @@
 package pl.edu.pja.plantare.screens.plants
 
 enum class PlantActionOption(val title: String) {
-  EditPlant("Edit plants"),
+  EditPlant("Edit plant"),
   ToggleFlag("Toggle flag"),
-  DeletePlant("Delete plants");
+  DeletePlant("Delete plant");
 
   companion object {
     fun getByTitle(title: String): PlantActionOption {

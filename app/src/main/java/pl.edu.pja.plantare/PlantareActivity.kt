@@ -1,7 +1,12 @@
 package pl.edu.pja.plantare
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.Context
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.compose.setContent
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.material.ExperimentalMaterialApi
 import dagger.hilt.android.AndroidEntryPoint
@@ -12,9 +17,23 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 @ExperimentalMaterialApi
 class PlantareActivity : AppCompatActivity() {
+  @RequiresApi(Build.VERSION_CODES.N)
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
 
+    createNotificationChannel()
+
     setContent { PlantareApp() }
+  }
+
+  private fun createNotificationChannel() {
+    val channel = NotificationChannel(
+      R.string.watering_notification_channel_id.toString(),
+      "High priority notifications",
+      NotificationManager.IMPORTANCE_HIGH
+    )
+
+    val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+    notificationManager.createNotificationChannel(channel)
   }
 }

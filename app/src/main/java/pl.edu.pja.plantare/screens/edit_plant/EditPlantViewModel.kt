@@ -1,17 +1,22 @@
 package pl.edu.pja.plantare.screens.edit_plant
 
+import android.content.Context
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import dagger.hilt.android.lifecycle.HiltViewModel
-import java.text.SimpleDateFormat
-import java.util.*
-import javax.inject.Inject
 import pl.edu.pja.plantare.PLANT_ID
 import pl.edu.pja.plantare.common.ext.idFromParameter
 import pl.edu.pja.plantare.model.Plant
+import pl.edu.pja.plantare.model.service.AlarmSchedulerService
 import pl.edu.pja.plantare.model.service.LogService
 import pl.edu.pja.plantare.model.service.StorageService
+import pl.edu.pja.plantare.model.service.impl.AlarmSchedulerServiceServiceImpl
 import pl.edu.pja.plantare.screens.PlantareViewModel
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
+import java.util.TimeZone
+import javax.inject.Inject
 
 @HiltViewModel
 class EditPlantViewModel
@@ -19,7 +24,7 @@ class EditPlantViewModel
 constructor(
   savedStateHandle: SavedStateHandle,
   logService: LogService,
-  private val storageService: StorageService
+  private val storageService: StorageService,
 ) : PlantareViewModel(logService) {
 
   val plant = mutableStateOf(Plant())
@@ -40,10 +45,6 @@ constructor(
   fun onDescriptionChange(newValue: String) {
     plant.value = plant.value.copy(description = newValue)
   }
-
-  /*fun onUrlChange(newValue: String) {
-    plants.value = plants.value.copy(url = newValue)
-  }*/
 
   fun onDateChange(newValue: Long) {
     val calendar = Calendar.getInstance(TimeZone.getTimeZone(UTC))
@@ -66,12 +67,17 @@ constructor(
     plant.value = plant.value.copy(priority = newValue)
   }
 
-  fun onUrlChange(newValue: String) {
-    withPicture = true
-    plant.value = plant.value.copy(url = newValue)
+  fun onWateringFrequencyChange(newValue: String) {
+    plant.value = plant.value.copy(wateringFrequencyDays = newValue)
   }
 
-  fun onDoneClick(popUpScreen: () -> Unit) {
+  fun onImageUriChange(newValue: String) {
+    withPicture = true
+    plant.value = plant.value.copy(imageUri = newValue)
+  }
+
+  fun onDoneClick(popUpScreen: () -> Unit, context: Context) {
+    val alarmScheduler: AlarmSchedulerService = AlarmSchedulerServiceServiceImpl(context)
 
     launchCatching {
       loading.value = true
@@ -81,6 +87,11 @@ constructor(
         storageService.save(editedPlant, withPicture)
       } else {
         storageService.update(editedPlant, withPicture)
+      }
+
+      if (editedPlant.dueDate.isNotBlank() && editedPlant.wateringFrequencyDays.isNotBlank()) {
+        println("YASSS")
+        alarmScheduler.schedule(editedPlant)
       }
 
       popUpScreen()

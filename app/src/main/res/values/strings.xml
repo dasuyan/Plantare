@@ -10,6 +10,9 @@
     <string name="try_again">Try again</string>
     <string name="ok">OK</string>
 
+    <!-- Notifications -->
+    <string name="watering_notification_channel_id" translatable="false">plant_watering_channel</string>
+
     <!-- LoginScreen -->
     <string name="sign_in">Sign in</string>
     <string name="login_details">Enter your login details</string>
@@ -30,6 +33,7 @@
     <string name="title">Title</string>
     <string name="description">Description</string>
     <string name="url">URL</string>
+    <string name="watering_frequency">Watering frequency (days)</string>
     <string name="date">Date</string>
     <string name="time">Time</string>
     <string name="flag">Flag</string>

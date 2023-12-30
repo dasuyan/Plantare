@@ -6,7 +6,6 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.dataObjects
 import com.google.firebase.firestore.toObject
 import com.google.firebase.storage.StorageReference
-import javax.inject.Inject
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
@@ -16,6 +15,7 @@ import pl.edu.pja.plantare.model.Plant
 import pl.edu.pja.plantare.model.service.AccountService
 import pl.edu.pja.plantare.model.service.StorageService
 import pl.edu.pja.plantare.model.service.trace
+import javax.inject.Inject
 
 class StorageServiceImpl
 @Inject
@@ -56,14 +56,14 @@ constructor(
 
   override suspend fun uploadFile(plant: Plant): Uri? = coroutineScope {
     trace(UPLOAD_FILE_TRACE) {
-      val file = plant.url.toUri()
+      val file = plant.imageUri.toUri()
       val ref = storageRef.child("plants/${file.lastPathSegment}")
 
       try {
         ref.putFile(file).await()
 
         val downloadUri = ref.downloadUrl.await()
-        downloadUri?.let { plant.url = it.toString() }
+        downloadUri?.let { plant.imageUri = it.toString() }
 
         downloadUri
       } catch (e: Exception) {
