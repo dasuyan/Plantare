@@ -5,6 +5,7 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.os.Build
+import androidx.annotation.RequiresApi
 import pl.edu.pja.plantare.model.Plant
 import pl.edu.pja.plantare.model.service.AlarmReceiver
 import pl.edu.pja.plantare.model.service.AlarmSchedulerService
@@ -16,11 +17,12 @@ import java.time.temporal.ChronoUnit
 import java.util.Calendar
 import java.util.Locale
 
-class AlarmSchedulerServiceServiceImpl(
+class AlarmSchedulerServiceImpl(
     private val context: Context
 ) : AlarmSchedulerService {
     private val alarmManager = context.getSystemService(AlarmManager::class.java)
 
+    @RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
     override fun schedule(plant: Plant) {
         // Create an intent that will be triggered when the alarm fires
         val intent = Intent(context, AlarmReceiver::class.java).apply {
@@ -45,21 +47,12 @@ class AlarmSchedulerServiceServiceImpl(
         }
 
         // Schedule the alarm
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            alarmManager.setExactAndAllowWhileIdle(
-                AlarmManager.RTC_WAKEUP,
-                alarmTime.timeInMillis,
-                pendingIntent
-            )
-            println("Alarm set for (while idle): ${alarmTime.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.ENGLISH)}")
-        } else {
-            alarmManager.setExact(
-                AlarmManager.RTC_WAKEUP,
-                alarmTime.timeInMillis,
-                pendingIntent
-            )
-            println("Alarm set for: $alarmTime")
-        }
+        alarmManager.setExactAndAllowWhileIdle(
+            AlarmManager.RTC_WAKEUP,
+            alarmTime.timeInMillis,
+            pendingIntent
+        )
+        println("Alarm set for (while idle): ${alarmTime.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.ENGLISH)}")
     }
 
     private fun calculateNextWateringDate(lastWateringDate: LocalDate, wateringFrequencyDays: Int): LocalDate {

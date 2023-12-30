@@ -50,7 +50,6 @@ class AlarmReceiver : BroadcastReceiver() {
             .setContentIntent(pendingIntent) // Set the intent for when the user taps the notification
             .setAutoCancel(true) // Automatically remove the notification when tapped
             .build()
-
         if (ActivityCompat.checkSelfPermission(
                 context,
                 Manifest.permission.POST_NOTIFICATIONS

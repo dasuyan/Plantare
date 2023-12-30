@@ -10,7 +10,7 @@ import pl.edu.pja.plantare.model.Plant
 import pl.edu.pja.plantare.model.service.AlarmSchedulerService
 import pl.edu.pja.plantare.model.service.LogService
 import pl.edu.pja.plantare.model.service.StorageService
-import pl.edu.pja.plantare.model.service.impl.AlarmSchedulerServiceServiceImpl
+import pl.edu.pja.plantare.model.service.impl.AlarmSchedulerServiceImpl
 import pl.edu.pja.plantare.screens.PlantareViewModel
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -77,7 +77,7 @@ constructor(
   }
 
   fun onDoneClick(popUpScreen: () -> Unit, context: Context) {
-    val alarmScheduler: AlarmSchedulerService = AlarmSchedulerServiceServiceImpl(context)
+    val alarmScheduler: AlarmSchedulerService = AlarmSchedulerServiceImpl(context)
 
     launchCatching {
       loading.value = true
