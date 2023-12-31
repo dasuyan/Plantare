@@ -20,6 +20,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import pl.edu.pja.plantare.common.composable.DropdownContextMenu
 import pl.edu.pja.plantare.common.ext.contextMenu
+import pl.edu.pja.plantare.common.ext.getLastWateringDate
 import pl.edu.pja.plantare.common.ext.getNextWateringDateString
 import pl.edu.pja.plantare.common.ext.hasDueDate
 import pl.edu.pja.plantare.common.ext.hasDueTime
@@ -79,6 +80,8 @@ fun PlantListItem(
   // Dimensions
   val cardSideMargin = 12.dp
   val marginNormal = 16.dp
+
+  val lastWateringDate = plant.getLastWateringDate()
   val nextWateringDate = plant.getNextWateringDateString()
 
   Card(
@@ -119,7 +122,7 @@ fun PlantListItem(
         style = MaterialTheme.typography.body2
       )
       Text(
-        text = plant.lastWateringDate,
+        text = lastWateringDate,
         Modifier.align(Alignment.CenterHorizontally),
         style = MaterialTheme.typography.overline
       )

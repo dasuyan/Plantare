@@ -1,6 +1,7 @@
 package pl.edu.pja.plantare.screens.plants
 
 import android.annotation.SuppressLint
+import android.content.Context
 import androidx.activity.compose.ReportDrawnWhen
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -11,6 +12,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -52,7 +54,7 @@ fun PlantsScreenContent(
   onAddClick: ((String) -> Unit) -> Unit,
   onSettingsClick: ((String) -> Unit) -> Unit,
   onPlantCheckChange: (Plant) -> Unit,
-  onPlantActionClick: ((String) -> Unit, Plant, String) -> Unit,
+  onPlantActionClick: ((String) -> Unit, Plant, String, Context) -> Unit,
   openScreen: (String) -> Unit
 ) {
   Scaffold(
@@ -103,11 +105,12 @@ fun PlantsScreenContent(
 private fun PlantList(
   plants: List<Plant>,
   options: List<String>,
-  onPlantActionClick: ((String) -> Unit, Plant, String) -> Unit,
+  onPlantActionClick: ((String) -> Unit, Plant, String, Context) -> Unit,
   openScreen: (String) -> Unit,
   //onPlantClick: (PlantAndGardenPlantings) -> Unit,
   modifier: Modifier = Modifier,
 ) {
+  val context = LocalContext.current
   // Call reportFullyDrawn when the garden list has been rendered
   val gridState = rememberLazyGridState()
   ReportDrawnWhen { gridState.layoutInfo.totalItemsCount > 0 }
@@ -125,7 +128,7 @@ private fun PlantList(
         PlantListItem(
           plant = plant,
           options = options,
-          onActionClick = { action -> onPlantActionClick(openScreen, plant, action) }
+          onActionClick = { action -> onPlantActionClick(openScreen, plant, action, context) }
         )
       }
     }
@@ -147,7 +150,7 @@ fun PlantsScreenPreview() {
       onAddClick = {},
       onSettingsClick = {},
       onPlantCheckChange = {},
-      onPlantActionClick = { _, _, _ -> },
+      onPlantActionClick = { _, _, _, _ -> },
       openScreen = {}
     )
   }
