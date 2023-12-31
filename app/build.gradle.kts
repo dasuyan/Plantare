@@ -75,6 +75,7 @@ dependencies {
     implementation("com.google.dagger:hilt-android:2.47")
     implementation("io.coil-kt:coil-compose:2.5.0")
     implementation("androidx.test:runner:1.5.2")
+    implementation("androidx.compose.material3:material3:1.1.2")
     ksp("com.google.dagger:hilt-compiler:2.47")
 
     //Firebase

@@ -1,9 +1,11 @@
 package pl.edu.pja.plantare.screens.plants
 
 import android.annotation.SuppressLint
+import androidx.activity.compose.ReportDrawnWhen
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -13,13 +15,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import pl.edu.pja.plantare.R.drawable as AppIcon
-import pl.edu.pja.plantare.R.string as AppText
 import pl.edu.pja.plantare.common.composable.ActionToolbar
 import pl.edu.pja.plantare.common.ext.smallSpacer
 import pl.edu.pja.plantare.common.ext.toolbarActions
 import pl.edu.pja.plantare.model.Plant
 import pl.edu.pja.plantare.theme.PlantareTheme
+import pl.edu.pja.plantare.R.drawable as AppIcon
+import pl.edu.pja.plantare.R.string as AppText
 
 @Composable
 @ExperimentalMaterialApi
@@ -65,7 +67,9 @@ fun PlantsScreenContent(
       }
     }
   ) {
-    Column(modifier = Modifier.fillMaxWidth().fillMaxHeight()) {
+    Column(modifier = Modifier
+      .fillMaxWidth()
+      .fillMaxHeight()) {
       ActionToolbar(
         title = AppText.plants,
         modifier = Modifier.toolbarActions(),
@@ -75,7 +79,13 @@ fun PlantsScreenContent(
 
       Spacer(modifier = Modifier.smallSpacer())
 
-      LazyColumn {
+      PlantList(
+        plants = plants,
+        options = options,
+        onPlantActionClick = onPlantActionClick,
+        openScreen = openScreen,
+        modifier = modifier)
+      /*LazyColumn {
         items(plants, key = { it.id }) { plantItem ->
           PlantItem(
             plant = plantItem,
@@ -84,6 +94,39 @@ fun PlantsScreenContent(
             onActionClick = { action -> onPlantActionClick(openScreen, plantItem, action) }
           )
         }
+      }*/
+    }
+  }
+}
+
+@Composable
+private fun PlantList(
+  plants: List<Plant>,
+  options: List<String>,
+  onPlantActionClick: ((String) -> Unit, Plant, String) -> Unit,
+  openScreen: (String) -> Unit,
+  //onPlantClick: (PlantAndGardenPlantings) -> Unit,
+  modifier: Modifier = Modifier,
+) {
+  // Call reportFullyDrawn when the garden list has been rendered
+  val gridState = rememberLazyGridState()
+  ReportDrawnWhen { gridState.layoutInfo.totalItemsCount > 0 }
+  LazyVerticalGrid(
+    columns = GridCells.Fixed(2),
+    modifier,
+    state = gridState,
+    contentPadding = PaddingValues(
+      horizontal = 12.dp,
+      vertical = 16.dp
+    )
+  ) {
+    plants.listIterator().forEach { plant ->
+      item {
+        PlantListItem(
+          plant = plant,
+          options = options,
+          onActionClick = { action -> onPlantActionClick(openScreen, plant, action) }
+        )
       }
     }
   }
@@ -93,7 +136,7 @@ fun PlantsScreenContent(
 @ExperimentalMaterialApi
 @Composable
 fun PlantsScreenPreview() {
-  val plant = Plant(title = "Plant title", flag = true, completed = true)
+  val plant = Plant(name = "Plant name", flag = true, completed = true)
 
   val options = PlantActionOption.getOptions(hasEditOption = true)
 

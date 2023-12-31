@@ -30,11 +30,11 @@
 
     <!-- EditPlantScreen -->
     <string name="edit_plant">Edit your plant</string>
-    <string name="title">Title</string>
+    <string name="name">Name</string>
     <string name="description">Description</string>
     <string name="url">URL</string>
     <string name="watering_frequency">Watering frequency (days)</string>
-    <string name="date">Date</string>
+    <string name="last_watering_date">Last watering date</string>
     <string name="time">Time</string>
     <string name="flag">Flag</string>
     <string name="priority">Priority</string>

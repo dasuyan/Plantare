@@ -84,7 +84,7 @@ fun EditPlantScreen(popUpScreen: () -> Unit, viewModel: EditPlantViewModel = hil
   EditPlantScreenContent(
     plant = plant,
     onDoneClick = { viewModel.onDoneClick(popUpScreen, context) },
-    onTitleChange = viewModel::onTitleChange,
+    onNameChange = viewModel::onNameChange,
     onDescriptionChange = viewModel::onDescriptionChange,
     onWateringFrequencyChange = viewModel::onWateringFrequencyChange,
     onImageUriChange = viewModel::onImageUriChange,
@@ -113,7 +113,7 @@ fun EditPlantScreenContent(
   modifier: Modifier = Modifier,
   plant: Plant,
   onDoneClick: () -> Unit,
-  onTitleChange: (String) -> Unit,
+  onNameChange: (String) -> Unit,
   onDescriptionChange: (String) -> Unit,
   onWateringFrequencyChange: (String) -> Unit,
   onImageUriChange: (String) -> Unit,
@@ -155,10 +155,10 @@ fun EditPlantScreenContent(
     Spacer(modifier = Modifier.spacer())
 
     val fieldModifier = Modifier.fieldModifier()
-    BasicField(AppText.title, plant.title, onTitleChange, fieldModifier)
+    BasicField(AppText.name, plant.name, onNameChange, fieldModifier)
     BasicField(AppText.description, plant.description, onDescriptionChange, fieldModifier)
     BasicField(AppText.watering_frequency, plant.wateringFrequencyDays, onWateringFrequencyChange, fieldModifier)
-    BasicField(AppText.url, plant.imageUri, onImageUriChange, fieldModifier)
+    //BasicField(AppText.url, plant.imageUri, onImageUriChange, fieldModifier)
 
     Spacer(modifier = Modifier.spacer())
 
@@ -267,7 +267,7 @@ private fun CardEditors(
   onTimeChange: (Int, Int) -> Unit,
   activity: AppCompatActivity?
 ) {
-  RegularCardEditor(AppText.date, AppIcon.ic_calendar, plant.dueDate, Modifier.card()) {
+  RegularCardEditor(AppText.last_watering_date, AppIcon.ic_calendar, plant.lastWateringDate, Modifier.card()) {
     showDatePicker(activity, onDateChange)
   }
 
@@ -318,13 +318,13 @@ private fun showTimePicker(activity: AppCompatActivity?, onTimeChange: (Int, Int
 @ExperimentalMaterialApi
 @Composable
 fun EditPlantScreenPreview() {
-  val plant = Plant(title = "Plant title", description = "Plant description", flag = true)
+  val plant = Plant(name = "Plant name", description = "Plant description", flag = true)
 
   PlantareTheme {
     EditPlantScreenContent(
       plant = plant,
       onDoneClick = {},
-      onTitleChange = {},
+      onNameChange = {},
       onDescriptionChange = {},
       onWateringFrequencyChange = {},
       onImageUriChange = {},

@@ -4,12 +4,12 @@ import com.google.firebase.firestore.DocumentId
 
 data class Plant(
   @DocumentId val id: String = "",
-  val title: String = "",
+  val name: String = "",
   val priority: String = "",
-  val dueDate: String = "",
-  val dueTime: String = "" ,
-  val wateringFrequencyDays: String = "",
   val lastWateringDate: String = "",
+  val dueTime: String = "",
+  val wateringFrequencyDays: String = "",
+  //val lastWateringDate: String = "",
   val description: String = "",
   var imageUri: String = "",
   val flag: Boolean = false,

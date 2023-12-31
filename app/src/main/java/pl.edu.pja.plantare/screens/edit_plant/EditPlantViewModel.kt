@@ -38,8 +38,8 @@ constructor(
     }
   }
 
-  fun onTitleChange(newValue: String) {
-    plant.value = plant.value.copy(title = newValue)
+  fun onNameChange(newValue: String) {
+    plant.value = plant.value.copy(name = newValue)
   }
 
   fun onDescriptionChange(newValue: String) {
@@ -50,7 +50,7 @@ constructor(
     val calendar = Calendar.getInstance(TimeZone.getTimeZone(UTC))
     calendar.timeInMillis = newValue
     val newDueDate = SimpleDateFormat(DATE_FORMAT, Locale.ENGLISH).format(calendar.time)
-    plant.value = plant.value.copy(dueDate = newDueDate)
+    plant.value = plant.value.copy(lastWateringDate = newDueDate)
   }
 
   fun onTimeChange(hour: Int, minute: Int) {
@@ -89,8 +89,7 @@ constructor(
         storageService.update(editedPlant, withPicture)
       }
 
-      if (editedPlant.dueDate.isNotBlank() && editedPlant.wateringFrequencyDays.isNotBlank()) {
-        println("YASSS")
+      if (editedPlant.lastWateringDate.isNotBlank() && editedPlant.wateringFrequencyDays.isNotBlank()) {
         alarmScheduler.schedule(editedPlant)
       }
 
@@ -104,6 +103,6 @@ constructor(
 
   companion object {
     private const val UTC = "UTC"
-    private const val DATE_FORMAT = "EEE, d MMM yyyy"
+    private const val DATE_FORMAT = "EEE, dd MMM yyyy"
   }
 }
