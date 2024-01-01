@@ -7,10 +7,10 @@ import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
 
 private val DarkColorPalette =
-  darkColors(primary = BrightOrange, primaryVariant = MediumOrange, secondary = DarkOrange)
+  darkColors(primary = BrightGreen, primaryVariant = DarkGreen, secondary = MediumGreen)
 
 private val LightColorPalette =
-  lightColors(primary = BrightOrange, primaryVariant = MediumOrange, secondary = DarkOrange)
+  lightColors(primary = BrightGreen, primaryVariant = DarkGreen, secondary = MediumGreen)
 
 @Composable
 fun PlantareTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable() () -> Unit) {

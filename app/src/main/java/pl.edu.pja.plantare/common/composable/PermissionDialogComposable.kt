@@ -15,7 +15,7 @@ import androidx.compose.ui.res.stringResource
 import pl.edu.pja.plantare.R.string as AppText
 import pl.edu.pja.plantare.common.ext.alertDialog
 import pl.edu.pja.plantare.common.ext.textButton
-import pl.edu.pja.plantare.theme.BrightOrange
+import pl.edu.pja.plantare.theme.BrightGreen
 
 @Composable
 fun PermissionDialog(onRequestPermission: () -> Unit) {
@@ -34,7 +34,7 @@ fun PermissionDialog(onRequestPermission: () -> Unit) {
           },
           modifier = Modifier.textButton(),
           colors =
-            ButtonDefaults.buttonColors(backgroundColor = BrightOrange, contentColor = Color.White)
+            ButtonDefaults.buttonColors(backgroundColor = BrightGreen, contentColor = Color.White)
         ) {
           Text(text = stringResource(AppText.request_notification_permission))
         }
@@ -58,7 +58,7 @@ fun RationaleDialog() {
           onClick = { showWarningDialog = false },
           modifier = Modifier.textButton(),
           colors =
-            ButtonDefaults.buttonColors(backgroundColor = BrightOrange, contentColor = Color.White)
+            ButtonDefaults.buttonColors(backgroundColor = BrightGreen, contentColor = Color.White)
         ) {
           Text(text = stringResource(AppText.ok))
         }

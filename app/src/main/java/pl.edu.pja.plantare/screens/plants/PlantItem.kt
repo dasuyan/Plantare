@@ -18,6 +18,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import pl.edu.pja.plantare.R
 import pl.edu.pja.plantare.common.composable.DropdownContextMenu
 import pl.edu.pja.plantare.common.ext.contextMenu
 import pl.edu.pja.plantare.common.ext.getLastWateringDate
@@ -25,7 +26,6 @@ import pl.edu.pja.plantare.common.ext.getNextWateringDateString
 import pl.edu.pja.plantare.common.ext.hasDueDate
 import pl.edu.pja.plantare.common.ext.hasDueTime
 import pl.edu.pja.plantare.model.Plant
-import pl.edu.pja.plantare.R.drawable as AppIcon
 
 /*@Composable
 @ExperimentalMaterialApi
@@ -59,7 +59,7 @@ fun PlantItem(
       if (plant.flag) {
         Icon(
           painter = painterResource(AppIcon.ic_flag),
-          tint = DarkOrange,
+          tint = MediumGreen,
           contentDescription = "Flag"
         )
       }
@@ -86,22 +86,26 @@ fun PlantListItem(
 
   Card(
    // onClick = { onPlantClick(plant) },
-    modifier = Modifier.padding(
-      start = cardSideMargin,
-      end = cardSideMargin,
-      bottom = 26.dp
-    ),
+    modifier = Modifier
+      .padding(
+        start = cardSideMargin,
+        end = cardSideMargin,
+        bottom = 26.dp
+      ),
     backgroundColor = MaterialTheme.colors.secondary,
     contentColor = MaterialTheme.colors.onSecondary,
     //colors = CardDefaults.cardColors(containerColor = MaterialTheme.colors.secondary)
   ) {
-    Column(Modifier.fillMaxWidth()) {
+    Column(
+      Modifier
+        .fillMaxWidth()
+    ) {
       PlantareImage(
         model = plant.imageUri,
         contentDescription = plant.description,
         Modifier
           .fillMaxWidth()
-          .height(130.dp),
+          .height(95.dp),
         contentScale = ContentScale.Crop,
       )
 
@@ -110,9 +114,11 @@ fun PlantListItem(
         text = plant.name,
         Modifier
           .padding(vertical = marginNormal)
-          .align(Alignment.CenterHorizontally),
+          .align(Alignment.CenterHorizontally)
+          .height(42.dp),
         style = MaterialTheme.typography.subtitle1,
-        textAlign = TextAlign.Center
+        textAlign = TextAlign.Center,
+        maxLines = 2
       )
 
       // Last watered
@@ -139,11 +145,26 @@ fun PlantListItem(
         style = MaterialTheme.typography.overline,
       )
 
-      if (nextWateringDate == "Today") {
-        Button(onClick = { /*TODO*/ }) {
-          
+      val waterToday = nextWateringDate == "Today"
+
+      Button(
+        modifier = Modifier.align(Alignment.CenterHorizontally),
+        enabled = waterToday,
+        onClick = { /*TODO*/ })
+      {
+        if (waterToday) {
+          Text(text = "Water me!", style = MaterialTheme.typography.button)
+          Icon(
+            painter = painterResource(R.drawable.baseline_water_drop_24),
+            contentDescription = "Water droplet",
+          )
+        } else {
+          Text(text = "Watered", style = MaterialTheme.typography.button)
+          Icon(
+            painter = painterResource(R.drawable.baseline_local_florist_24),
+            contentDescription = "A flower",
+          )
         }
-        Icon(painter = painterResource(AppIcon.baseline_water_drop_24), contentDescription = "Water droplet")
       }
 
       DropdownContextMenu(

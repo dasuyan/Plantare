@@ -2,6 +2,6 @@ package pl.edu.pja.plantare.theme
 
 import androidx.compose.ui.graphics.Color
 
-val BrightOrange = Color(0xFFFF8A65)
-val MediumOrange = Color(0xFFFFA000)
-val DarkOrange = Color(0xFFF57C00)
+val BrightGreen = Color(0xFF8BC34A)
+val MediumGreen = Color(0xFF4CAF50)
+val DarkGreen = Color(0xFF009688)
