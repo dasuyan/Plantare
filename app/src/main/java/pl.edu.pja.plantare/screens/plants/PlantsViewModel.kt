@@ -3,6 +3,10 @@ package pl.edu.pja.plantare.screens.plants
 import android.content.Context
 import androidx.compose.runtime.mutableStateOf
 import dagger.hilt.android.lifecycle.HiltViewModel
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.util.Locale
+import javax.inject.Inject
 import pl.edu.pja.plantare.EDIT_PLANT_SCREEN
 import pl.edu.pja.plantare.PLANT_ID
 import pl.edu.pja.plantare.SETTINGS_SCREEN
@@ -13,7 +17,6 @@ import pl.edu.pja.plantare.model.service.LogService
 import pl.edu.pja.plantare.model.service.StorageService
 import pl.edu.pja.plantare.model.service.impl.AlarmSchedulerServiceImpl
 import pl.edu.pja.plantare.screens.PlantareViewModel
-import javax.inject.Inject
 
 @HiltViewModel
 class PlantsViewModel
@@ -40,11 +43,23 @@ constructor(
 
   fun onSettingsClick(openScreen: (String) -> Unit) = openScreen(SETTINGS_SCREEN)
 
-  fun onPlantActionClick(openScreen: (String) -> Unit, plant: Plant, action: String, context: Context) {
+  fun onPlantActionClick(
+    openScreen: (String) -> Unit,
+    plant: Plant,
+    action: String,
+    context: Context
+  ) {
     when (PlantActionOption.getByTitle(action)) {
       PlantActionOption.EditPlant -> openScreen("$EDIT_PLANT_SCREEN?$PLANT_ID={${plant.id}}")
       PlantActionOption.ToggleFlag -> onFlagPlantClick(plant)
       PlantActionOption.DeletePlant -> onDeletePlantClick(plant, context)
+    }
+  }
+
+  fun onWaterClick(plant: Plant) {
+    val formatter = DateTimeFormatter.ofPattern("EEE, dd MMM yyyy", Locale.ENGLISH)
+    launchCatching {
+      storageService.update(plant.copy(lastWateringDate = LocalDate.now().format(formatter)))
     }
   }
 

@@ -37,6 +37,7 @@ fun PlantsScreen(openScreen: (String) -> Unit, viewModel: PlantsViewModel = hilt
     onAddClick = viewModel::onAddClick,
     onSettingsClick = viewModel::onSettingsClick,
     onPlantCheckChange = viewModel::onPlantCheckChange,
+    onWaterClick = viewModel::onWaterClick,
     onPlantActionClick = viewModel::onPlantActionClick,
     openScreen = openScreen
   )
@@ -53,6 +54,7 @@ fun PlantsScreenContent(
   options: List<String>,
   onAddClick: ((String) -> Unit) -> Unit,
   onSettingsClick: ((String) -> Unit) -> Unit,
+  onWaterClick: (Plant) -> Unit,
   onPlantCheckChange: (Plant) -> Unit,
   onPlantActionClick: ((String) -> Unit, Plant, String, Context) -> Unit,
   openScreen: (String) -> Unit
@@ -69,9 +71,7 @@ fun PlantsScreenContent(
       }
     }
   ) {
-    Column(modifier = Modifier
-      .fillMaxWidth()
-      .fillMaxHeight()) {
+    Column(modifier = Modifier.fillMaxWidth().fillMaxHeight()) {
       ActionToolbar(
         title = AppText.plants,
         modifier = Modifier.toolbarActions(),
@@ -85,18 +85,10 @@ fun PlantsScreenContent(
         plants = plants,
         options = options,
         onPlantActionClick = onPlantActionClick,
+        onWaterClick,
         openScreen = openScreen,
-        modifier = modifier)
-      /*LazyColumn {
-        items(plants, key = { it.id }) { plantItem ->
-          PlantItem(
-            plant = plantItem,
-            options = options,
-            onCheckChange = { onPlantCheckChange(plantItem) },
-            onActionClick = { action -> onPlantActionClick(openScreen, plantItem, action) }
-          )
-        }
-      }*/
+        modifier = modifier
+      )
     }
   }
 }
@@ -106,8 +98,9 @@ private fun PlantList(
   plants: List<Plant>,
   options: List<String>,
   onPlantActionClick: ((String) -> Unit, Plant, String, Context) -> Unit,
+  onWaterClick: (Plant) -> Unit,
   openScreen: (String) -> Unit,
-  //onPlantClick: (PlantAndGardenPlantings) -> Unit,
+  // onPlantClick: (PlantAndGardenPlantings) -> Unit,
   modifier: Modifier = Modifier,
 ) {
   val context = LocalContext.current
@@ -118,16 +111,14 @@ private fun PlantList(
     columns = GridCells.Fixed(2),
     modifier,
     state = gridState,
-    contentPadding = PaddingValues(
-      horizontal = 12.dp,
-      vertical = 16.dp
-    )
+    contentPadding = PaddingValues(horizontal = 12.dp, vertical = 16.dp)
   ) {
     plants.listIterator().forEach { plant ->
       item {
         PlantListItem(
           plant = plant,
           options = options,
+          onWaterClick = onWaterClick,
           onActionClick = { action -> onPlantActionClick(openScreen, plant, action, context) }
         )
       }
@@ -150,6 +141,7 @@ fun PlantsScreenPreview() {
       onAddClick = {},
       onSettingsClick = {},
       onPlantCheckChange = {},
+      onWaterClick = {},
       onPlantActionClick = { _, _, _, _ -> },
       openScreen = {}
     )

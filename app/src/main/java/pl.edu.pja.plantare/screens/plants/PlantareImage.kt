@@ -18,30 +18,30 @@ import coil.compose.SubcomposeAsyncImage
 
 @Composable
 fun PlantareImage(
-    model: Any?,
-    contentDescription: String?,
-    modifier: Modifier = Modifier,
-    alignment: Alignment = Alignment.Center,
-    contentScale: ContentScale = ContentScale.Fit,
-    alpha: Float = DefaultAlpha,
-    colorFilter: ColorFilter? = null,
+  model: Any?,
+  contentDescription: String?,
+  modifier: Modifier = Modifier,
+  alignment: Alignment = Alignment.Center,
+  contentScale: ContentScale = ContentScale.Fit,
+  alpha: Float = DefaultAlpha,
+  colorFilter: ColorFilter? = null,
 ) {
-    if (LocalInspectionMode.current) {
-        Box(modifier = modifier.background(Color.Magenta))
-        return
+  if (LocalInspectionMode.current) {
+    Box(modifier = modifier.background(Color.Magenta))
+    return
+  }
+  SubcomposeAsyncImage(
+    model = model,
+    contentDescription = contentDescription,
+    modifier = modifier,
+    alignment = alignment,
+    contentScale = contentScale,
+    alpha = alpha,
+    colorFilter = colorFilter,
+    loading = {
+      Box(modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
+        CircularProgressIndicator(Modifier.size(40.dp))
+      }
     }
-    SubcomposeAsyncImage(
-        model = model,
-        contentDescription = contentDescription,
-        modifier = modifier,
-        alignment = alignment,
-        contentScale = contentScale,
-        alpha = alpha,
-        colorFilter = colorFilter,
-        loading = {
-            Box(modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
-                CircularProgressIndicator(Modifier.size(40.dp))
-            }
-        }
-    )
+  )
 }

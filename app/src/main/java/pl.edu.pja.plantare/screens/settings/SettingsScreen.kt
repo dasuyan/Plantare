@@ -20,6 +20,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import pl.edu.pja.plantare.R.drawable as AppIcon
+import pl.edu.pja.plantare.R.string as AppText
 import pl.edu.pja.plantare.common.composable.BasicToolbar
 import pl.edu.pja.plantare.common.composable.DangerousCardEditor
 import pl.edu.pja.plantare.common.composable.DialogCancelButton
@@ -28,8 +30,6 @@ import pl.edu.pja.plantare.common.composable.RegularCardEditor
 import pl.edu.pja.plantare.common.ext.card
 import pl.edu.pja.plantare.common.ext.spacer
 import pl.edu.pja.plantare.theme.PlantareTheme
-import pl.edu.pja.plantare.R.drawable as AppIcon
-import pl.edu.pja.plantare.R.string as AppText
 
 @ExperimentalMaterialApi
 @Composable

@@ -25,6 +25,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
 import androidx.compose.material.CircularProgressIndicator
@@ -43,6 +44,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.input.KeyboardCapitalization
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
@@ -53,7 +56,14 @@ import coil.request.ImageRequest
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
+import java.io.File
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
+import java.util.Objects
 import pl.edu.pja.plantare.BuildConfig
+import pl.edu.pja.plantare.R.drawable as AppIcon
+import pl.edu.pja.plantare.R.string as AppText
 import pl.edu.pja.plantare.common.composable.ActionToolbar
 import pl.edu.pja.plantare.common.composable.BasicField
 import pl.edu.pja.plantare.common.composable.CardSelector
@@ -65,13 +75,6 @@ import pl.edu.pja.plantare.common.ext.toolbarActions
 import pl.edu.pja.plantare.model.Plant
 import pl.edu.pja.plantare.model.Priority
 import pl.edu.pja.plantare.theme.PlantareTheme
-import java.io.File
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
-import java.util.Objects
-import pl.edu.pja.plantare.R.drawable as AppIcon
-import pl.edu.pja.plantare.R.string as AppText
 
 @Composable
 @ExperimentalMaterialApi
@@ -97,9 +100,7 @@ fun EditPlantScreen(popUpScreen: () -> Unit, viewModel: EditPlantViewModel = hil
 
   if (loading) {
     Box(
-      modifier = Modifier
-        .fillMaxSize()
-        .background(Color.Gray.copy(alpha = 0.3f)),
+      modifier = Modifier.fillMaxSize().background(Color.Gray.copy(alpha = 0.3f)),
       contentAlignment = Alignment.Center
     ) {
       CircularProgressIndicator(color = MaterialTheme.colors.onBackground)
@@ -124,10 +125,7 @@ fun EditPlantScreenContent(
   activity: AppCompatActivity?
 ) {
   Column(
-    modifier = modifier
-      .fillMaxWidth()
-      .fillMaxHeight()
-      .verticalScroll(rememberScrollState()),
+    modifier = modifier.fillMaxWidth().fillMaxHeight().verticalScroll(rememberScrollState()),
     horizontalAlignment = Alignment.CenterHorizontally
   ) {
     ActionToolbar(
@@ -140,13 +138,9 @@ fun EditPlantScreenContent(
     Spacer(modifier = Modifier.spacer())
 
     SubcomposeAsyncImage(
-      model = ImageRequest.Builder(LocalContext.current)
-        .data(plant.imageUri)
-        .crossfade(true)
-        .build(),
-      modifier = Modifier
-        .padding(16.dp, 8.dp)
-        .clip(MaterialTheme.shapes.medium),
+      model =
+        ImageRequest.Builder(LocalContext.current).data(plant.imageUri).crossfade(true).build(),
+      modifier = Modifier.padding(16.dp, 8.dp).clip(MaterialTheme.shapes.medium),
       contentDescription = null,
       loading = { LoadingAnimation() }
     )
@@ -155,10 +149,38 @@ fun EditPlantScreenContent(
     Spacer(modifier = Modifier.spacer())
 
     val fieldModifier = Modifier.fieldModifier()
-    BasicField(AppText.name, plant.name, onNameChange, fieldModifier)
-    BasicField(AppText.description, plant.description, onDescriptionChange, fieldModifier)
-    BasicField(AppText.watering_frequency, plant.wateringFrequencyDays, onWateringFrequencyChange, fieldModifier)
-    //BasicField(AppText.url, plant.imageUri, onImageUriChange, fieldModifier)
+    BasicField(
+      text = AppText.name,
+      value = plant.name,
+      onNewValue = onNameChange,
+      modifier = fieldModifier,
+      keyboardOptions =
+        KeyboardOptions(
+          keyboardType = KeyboardType.Text,
+          capitalization = KeyboardCapitalization.Sentences
+        )
+    )
+    BasicField(
+      text = AppText.description,
+      value = plant.description,
+      onNewValue = onDescriptionChange,
+      modifier = fieldModifier,
+      keyboardOptions =
+        KeyboardOptions(
+          keyboardType = KeyboardType.Text,
+          capitalization = KeyboardCapitalization.Sentences
+        )
+    )
+    BasicField(
+      text = AppText.watering_frequency,
+      value = plant.wateringFrequencyDays,
+      onNewValue = onWateringFrequencyChange,
+      modifier = fieldModifier,
+      keyboardOptions =
+        KeyboardOptions(
+          keyboardType = KeyboardType.Number,
+        )
+    )
 
     Spacer(modifier = Modifier.spacer())
 
@@ -172,28 +194,26 @@ fun EditPlantScreenContent(
 @Composable
 fun LoadingAnimation() {
   val animation = rememberInfiniteTransition(label = "")
-  val progress by animation.animateFloat(
-    initialValue = 0f,
-    targetValue = 1f,
-    animationSpec = infiniteRepeatable(
-      animation = tween(1000),
-      repeatMode = RepeatMode.Restart,
-    ), label = ""
-  )
+  val progress by
+    animation.animateFloat(
+      initialValue = 0f,
+      targetValue = 1f,
+      animationSpec =
+        infiniteRepeatable(
+          animation = tween(1000),
+          repeatMode = RepeatMode.Restart,
+        ),
+      label = ""
+    )
 
   Box(
-    modifier = Modifier
-      .size(60.dp)
-      .scale(progress)
-      .alpha(1f - progress)
-      .border(
-        5.dp,
-        color = MaterialTheme.colors.primary,
-        shape = CircleShape
-      )
+    modifier =
+      Modifier.size(60.dp)
+        .scale(progress)
+        .alpha(1f - progress)
+        .border(5.dp, color = MaterialTheme.colors.primary, shape = CircleShape)
   )
 }
-
 
 fun Context.createImageFile(): File {
   val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.ENGLISH).format(Date())
@@ -234,9 +254,7 @@ fun PhotoTaker(onUrlChange: (String) -> Unit) {
     }
 
   Column(
-    Modifier
-      .fillMaxSize()
-      .padding(10.dp),
+    Modifier.fillMaxSize().padding(10.dp),
     horizontalAlignment = Alignment.CenterHorizontally
   ) {
     Button(
@@ -267,7 +285,12 @@ private fun CardEditors(
   onTimeChange: (Int, Int) -> Unit,
   activity: AppCompatActivity?
 ) {
-  RegularCardEditor(AppText.last_watering_date, AppIcon.ic_calendar, plant.lastWateringDate, Modifier.card()) {
+  RegularCardEditor(
+    AppText.last_watering_date,
+    AppIcon.ic_calendar,
+    plant.lastWateringDate,
+    Modifier.card()
+  ) {
     showDatePicker(activity, onDateChange)
   }
 

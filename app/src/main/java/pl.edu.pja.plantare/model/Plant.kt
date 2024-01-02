@@ -9,7 +9,6 @@ data class Plant(
   val lastWateringDate: String = "",
   val dueTime: String = "",
   val wateringFrequencyDays: String = "",
-  //val lastWateringDate: String = "",
   val description: String = "",
   var imageUri: String = "",
   val flag: Boolean = false,

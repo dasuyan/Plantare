@@ -4,6 +4,11 @@ import android.content.Context
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import dagger.hilt.android.lifecycle.HiltViewModel
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
+import java.util.TimeZone
+import javax.inject.Inject
 import pl.edu.pja.plantare.PLANT_ID
 import pl.edu.pja.plantare.common.ext.idFromParameter
 import pl.edu.pja.plantare.model.Plant
@@ -12,11 +17,6 @@ import pl.edu.pja.plantare.model.service.LogService
 import pl.edu.pja.plantare.model.service.StorageService
 import pl.edu.pja.plantare.model.service.impl.AlarmSchedulerServiceImpl
 import pl.edu.pja.plantare.screens.PlantareViewModel
-import java.text.SimpleDateFormat
-import java.util.Calendar
-import java.util.Locale
-import java.util.TimeZone
-import javax.inject.Inject
 
 @HiltViewModel
 class EditPlantViewModel
@@ -89,7 +89,9 @@ constructor(
         storageService.update(editedPlant, withPicture)
       }
 
-      if (editedPlant.lastWateringDate.isNotBlank() && editedPlant.wateringFrequencyDays.isNotBlank()) {
+      if (
+        editedPlant.lastWateringDate.isNotBlank() && editedPlant.wateringFrequencyDays.isNotBlank()
+      ) {
         alarmScheduler.schedule(editedPlant)
       }
 

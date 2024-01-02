@@ -12,6 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import pl.edu.pja.plantare.R.string as AppText
 import pl.edu.pja.plantare.common.composable.BasicButton
 import pl.edu.pja.plantare.common.composable.BasicToolbar
 import pl.edu.pja.plantare.common.composable.EmailField
@@ -20,7 +21,6 @@ import pl.edu.pja.plantare.common.composable.RepeatPasswordField
 import pl.edu.pja.plantare.common.ext.basicButton
 import pl.edu.pja.plantare.common.ext.fieldModifier
 import pl.edu.pja.plantare.theme.PlantareTheme
-import pl.edu.pja.plantare.R.string as AppText
 
 @Composable
 fun SignUpScreen(

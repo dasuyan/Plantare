@@ -2,11 +2,18 @@ package pl.edu.pja.plantare.common.composable
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.*
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
+import androidx.compose.material.OutlinedTextField
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -21,14 +28,17 @@ fun BasicField(
   @StringRes text: Int,
   value: String,
   onNewValue: (String) -> Unit,
-  modifier: Modifier = Modifier
+  modifier: Modifier = Modifier,
+  keyboardOptions: KeyboardOptions
 ) {
   OutlinedTextField(
-    singleLine = true,
+    label = { Text(stringResource(text)) },
+    singleLine = false,
     modifier = modifier,
     value = value,
     onValueChange = { onNewValue(it) },
-    placeholder = { Text(stringResource(text)) }
+    placeholder = { Text(stringResource(text)) },
+    keyboardOptions = keyboardOptions,
   )
 }
 
@@ -40,7 +50,7 @@ fun EmailField(value: String, onNewValue: (String) -> Unit, modifier: Modifier =
     value = value,
     onValueChange = { onNewValue(it) },
     placeholder = { Text(stringResource(AppText.email)) },
-    leadingIcon = { Icon(imageVector = Icons.Default.Email, contentDescription = "Email") }
+    leadingIcon = { Icon(imageVector = Icons.Default.Email, contentDescription = "Email") },
   )
 }
 

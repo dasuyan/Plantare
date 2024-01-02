@@ -21,14 +21,13 @@ fun Plant?.getNextWateringDate(): LocalDate {
 
 fun Plant?.getNextWateringDateString(): String {
   if (this?.lastWateringDate.orEmpty().isBlank()) {
-      return "N/A"
+    return "N/A"
   }
   val convertedLastWateringDate = convertStringToDate(this?.lastWateringDate.orEmpty())
-  val nextWateringDate = convertedLastWateringDate.plus(this?.wateringFrequencyDays?.toLong() ?: 0, ChronoUnit.DAYS)
+  val nextWateringDate =
+    convertedLastWateringDate.plus(this?.wateringFrequencyDays?.toLong() ?: 0, ChronoUnit.DAYS)
 
-  println("Now: ${LocalDate.now()}")
-  println("Next: $nextWateringDate")
-  if (LocalDate.now() == nextWateringDate) {
+  if (LocalDate.now() >= nextWateringDate) {
     return "Today"
   }
 

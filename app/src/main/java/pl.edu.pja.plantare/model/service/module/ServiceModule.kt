@@ -22,5 +22,6 @@ abstract class ServiceModule {
 
   @Binds abstract fun provideStorageService(impl: StorageServiceImpl): StorageService
 
-  @Binds abstract fun provideConfigurationService(impl: ConfigurationServiceImpl): ConfigurationService
+  @Binds
+  abstract fun provideConfigurationService(impl: ConfigurationServiceImpl): ConfigurationService
 }
