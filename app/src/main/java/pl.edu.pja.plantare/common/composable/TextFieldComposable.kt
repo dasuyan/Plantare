@@ -45,18 +45,25 @@ fun BasicField(
 @Composable
 fun EmailField(value: String, onNewValue: (String) -> Unit, modifier: Modifier = Modifier) {
   OutlinedTextField(
+    label = { Text(stringResource(AppText.email)) },
     singleLine = true,
     modifier = modifier,
     value = value,
     onValueChange = { onNewValue(it) },
     placeholder = { Text(stringResource(AppText.email)) },
     leadingIcon = { Icon(imageVector = Icons.Default.Email, contentDescription = "Email") },
+    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
   )
 }
 
 @Composable
 fun PasswordField(value: String, onNewValue: (String) -> Unit, modifier: Modifier = Modifier) {
-  PasswordField(value, AppText.password, onNewValue, modifier)
+  PasswordField(
+    value = value,
+    placeholder = AppText.password,
+    onNewValue = onNewValue,
+    modifier = modifier
+  )
 }
 
 @Composable
@@ -65,7 +72,12 @@ fun RepeatPasswordField(
   onNewValue: (String) -> Unit,
   modifier: Modifier = Modifier
 ) {
-  PasswordField(value, AppText.repeat_password, onNewValue, modifier)
+  PasswordField(
+    value = value,
+    placeholder = AppText.repeat_password,
+    onNewValue = onNewValue,
+    modifier = modifier
+  )
 }
 
 @Composable
@@ -85,6 +97,7 @@ private fun PasswordField(
     if (isVisible) VisualTransformation.None else PasswordVisualTransformation()
 
   OutlinedTextField(
+    label = { Text(text = stringResource(placeholder)) },
     modifier = modifier,
     value = value,
     onValueChange = { onNewValue(it) },
