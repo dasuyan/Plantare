@@ -27,9 +27,10 @@ import pl.edu.pja.plantare.R.string as AppText
 fun BasicField(
   @StringRes text: Int,
   value: String,
-  onNewValue: (String) -> Unit,
   modifier: Modifier = Modifier,
-  keyboardOptions: KeyboardOptions
+  onNewValue: (String) -> Unit = {},
+  keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
+  readOnly: Boolean
 ) {
   OutlinedTextField(
     label = { Text(stringResource(text)) },
@@ -39,6 +40,7 @@ fun BasicField(
     onValueChange = { onNewValue(it) },
     placeholder = { Text(stringResource(text)) },
     keyboardOptions = keyboardOptions,
+    readOnly = readOnly
   )
 }
 

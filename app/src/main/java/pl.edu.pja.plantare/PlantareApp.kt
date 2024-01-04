@@ -36,6 +36,7 @@ import pl.edu.pja.plantare.common.composable.PermissionDialog
 import pl.edu.pja.plantare.common.composable.RationaleDialog
 import pl.edu.pja.plantare.common.snackbar.SnackbarManager
 import pl.edu.pja.plantare.screens.edit_plant.EditPlantScreen
+import pl.edu.pja.plantare.screens.edit_plant.EditPlantScreenMode
 import pl.edu.pja.plantare.screens.login.LoginScreen
 import pl.edu.pja.plantare.screens.plants.PlantsScreen
 import pl.edu.pja.plantare.screens.settings.SettingsScreen
@@ -133,12 +134,15 @@ fun NavGraphBuilder.plantareGraph(appState: PlantareAppState) {
   composable(PLANTS_SCREEN) { PlantsScreen(openScreen = { route -> appState.navigate(route) }) }
 
   composable(
-    route = "$EDIT_PLANT_SCREEN$PLANT_ID_ARG",
+    route = "$EDIT_PLANT_SCREEN$EDIT_PLANT_SCREEN_MODE_ARG$PLANT_ID_ARG",
     arguments =
       listOf(
+        navArgument(EDIT_PLANT_SCREEN_MODE) {
+          nullable = false
+          defaultValue = EditPlantScreenMode.EDIT.name
+        },
         navArgument(PLANT_ID) {
           nullable = true
-          defaultValue = null
         }
       )
   ) {

@@ -4,11 +4,7 @@ import android.content.Context
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import dagger.hilt.android.lifecycle.HiltViewModel
-import java.text.SimpleDateFormat
-import java.util.Calendar
-import java.util.Locale
-import java.util.TimeZone
-import javax.inject.Inject
+import pl.edu.pja.plantare.EDIT_PLANT_SCREEN_MODE
 import pl.edu.pja.plantare.PLANT_ID
 import pl.edu.pja.plantare.common.ext.idFromParameter
 import pl.edu.pja.plantare.model.Plant
@@ -17,6 +13,11 @@ import pl.edu.pja.plantare.model.service.LogService
 import pl.edu.pja.plantare.model.service.StorageService
 import pl.edu.pja.plantare.model.service.impl.AlarmSchedulerServiceImpl
 import pl.edu.pja.plantare.screens.PlantareViewModel
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
+import java.util.TimeZone
+import javax.inject.Inject
 
 @HiltViewModel
 class EditPlantViewModel
@@ -28,14 +29,42 @@ constructor(
 ) : PlantareViewModel(logService) {
 
   val plant = mutableStateOf(Plant())
-  private var withPicture = false
   val loading = mutableStateOf(false)
+  val screenMode = mutableStateOf(EditPlantScreenMode.ADD)
+  val isDeleteDialogVisible = mutableStateOf(false)
+  private var withPicture = false
 
   init {
     val plantId = savedStateHandle.get<String>(PLANT_ID)
-    if (plantId != null) {
+    if (plantId != null && plantId != "{null}") {
       launchCatching { plant.value = storageService.getPlant(plantId.idFromParameter()) ?: Plant() }
     }
+
+    val screenMode = savedStateHandle.get<String>(EDIT_PLANT_SCREEN_MODE)
+    if (screenMode != null) {
+      this.screenMode.value = EditPlantScreenMode.valueOf(screenMode.idFromParameter())
+    }
+    println("Screen mode: $screenMode")
+  }
+
+  fun onEditClick() {
+    screenMode.value = EditPlantScreenMode.EDIT
+  }
+
+  fun onDeleteClick() {
+    isDeleteDialogVisible.value = true
+  }
+
+  fun onDeleteCancel() {
+    isDeleteDialogVisible.value = false
+  }
+
+  fun onDeleteConfirm(popUpScreen: () -> Unit, context: Context) {
+    launchCatching { storageService.delete(plant.value.id) }
+    val alarmScheduler: AlarmSchedulerService = AlarmSchedulerServiceImpl(context)
+    alarmScheduler.cancel(plant.value)
+
+    popUpScreen()
   }
 
   fun onNameChange(newValue: String) {
@@ -51,20 +80,6 @@ constructor(
     calendar.timeInMillis = newValue
     val newDueDate = SimpleDateFormat(DATE_FORMAT, Locale.ENGLISH).format(calendar.time)
     plant.value = plant.value.copy(lastWateringDate = newDueDate)
-  }
-
-  fun onTimeChange(hour: Int, minute: Int) {
-    val newDueTime = "${hour.toClockPattern()}:${minute.toClockPattern()}"
-    plant.value = plant.value.copy(dueTime = newDueTime)
-  }
-
-  fun onFlagToggle(newValue: String) {
-    val newFlagOption = EditFlagOption.getBooleanValue(newValue)
-    plant.value = plant.value.copy(flag = newFlagOption)
-  }
-
-  fun onPriorityChange(newValue: String) {
-    plant.value = plant.value.copy(priority = newValue)
   }
 
   fun onWateringFrequencyChange(newValue: String) {
@@ -97,10 +112,6 @@ constructor(
 
       popUpScreen()
     }
-  }
-
-  private fun Int.toClockPattern(): String {
-    return if (this < 10) "0$this" else "$this"
   }
 
   companion object {

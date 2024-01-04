@@ -29,7 +29,9 @@
     <string name="plants">Plants</string>
 
     <!-- EditPlantScreen -->
-    <string name="edit_plant">Edit your plant</string>
+    <string name="add_plant">Add a new plant</string>
+    <string name="edit_plant">Edit plant</string>
+    <string name="plant_details">Plant details</string>
     <string name="name">Name</string>
     <string name="description">Description</string>
     <string name="url">URL</string>
@@ -45,6 +47,8 @@
     <string name="delete_my_account">Delete my account</string>
 
     <!-- Dialogs -->
+    <string name="delete_plant_confirm">Delete</string>
+    <string name="delete_plant_cancel">Cancel</string>
     <string name="sign_out_title">Sign out?</string>
     <string name="sign_out_description">You will have to sign in again to see your plants.</string>
     <string name="delete_account_title">Delete account?</string>

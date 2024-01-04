@@ -6,21 +6,16 @@ import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
 import java.util.Locale
 
-fun Plant?.hasDueDate(): Boolean {
-  return this?.lastWateringDate.orEmpty().isNotBlank()
-}
-
-fun Plant?.hasDueTime(): Boolean {
-  return this?.dueTime.orEmpty().isNotBlank()
-}
-
 fun Plant?.getNextWateringDate(): LocalDate {
+  if (this?.lastWateringDate.orEmpty().isBlank() || this?.wateringFrequencyDays.orEmpty().isBlank()) {
+    return LocalDate.now()
+  }
   val convertedLastWateringDate = convertStringToDate(this?.lastWateringDate.orEmpty())
   return convertedLastWateringDate.plus(this?.wateringFrequencyDays?.toLong() ?: 0, ChronoUnit.DAYS)
 }
 
 fun Plant?.getNextWateringDateString(): String {
-  if (this?.lastWateringDate.orEmpty().isBlank()) {
+  if (this?.lastWateringDate.orEmpty().isBlank() || this?.wateringFrequencyDays.orEmpty().isBlank()) {
     return "N/A"
   }
   val convertedLastWateringDate = convertStringToDate(this?.lastWateringDate.orEmpty())

@@ -32,10 +32,6 @@ class AlarmReceiver : BroadcastReceiver() {
         flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
       }
 
-    // You can also include additional information from the notification in the intent if needed
-    // contentIntent.putExtra("PLANT_ID", intent.getIntExtra("PLANT_ID", 0))
-    // ...
-
     val pendingIntent =
       PendingIntent.getActivity(
         context,
@@ -48,7 +44,7 @@ class AlarmReceiver : BroadcastReceiver() {
       NotificationCompat.Builder(context, R.string.watering_notification_channel_id.toString())
         .setContentTitle("Water Your Plant")
         .setContentText("$plantName is due for watering!")
-        .setSmallIcon(R.mipmap.ic_launcher)
+        .setSmallIcon(R.mipmap.ic_launcher_round)
         .setPriority(NotificationCompat.PRIORITY_HIGH)
         .setContentIntent(pendingIntent) // Set the intent for when the user taps the notification
         .setAutoCancel(true) // Automatically remove the notification when tapped
@@ -57,13 +53,6 @@ class AlarmReceiver : BroadcastReceiver() {
       ActivityCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) !=
         PackageManager.PERMISSION_GRANTED
     ) {
-      // TODO: Consider calling
-      //    ActivityCompat#requestPermissions
-      // here to request the missing permissions, and then overriding
-      //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-      //                                          int[] grantResults)
-      // to handle the case where the user grants the permission. See the documentation
-      // for ActivityCompat#requestPermissions for more details.
       return
     }
     notificationManager.notify(plantName.hashCode(), notification)

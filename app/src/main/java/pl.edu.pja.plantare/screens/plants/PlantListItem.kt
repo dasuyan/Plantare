@@ -1,5 +1,6 @@
 package pl.edu.pja.plantare.screens.plants
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -11,7 +12,6 @@ import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.AbsoluteAlignment
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -20,22 +20,16 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import pl.edu.pja.plantare.R
-import pl.edu.pja.plantare.common.composable.DropdownContextMenu
-import pl.edu.pja.plantare.common.ext.contextMenu
 import pl.edu.pja.plantare.common.ext.getLastWateringDate
 import pl.edu.pja.plantare.common.ext.getNextWateringDateString
-import pl.edu.pja.plantare.common.ext.hasDueDate
-import pl.edu.pja.plantare.common.ext.hasDueTime
 import pl.edu.pja.plantare.model.Plant
 
-@OptIn(ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterialApi::class, ExperimentalFoundationApi::class)
 @Composable
 fun PlantListItem(
   plant: Plant,
-  options: List<String>,
-  onActionClick: (String) -> Unit,
-  onWaterClick: (Plant) -> Unit
-  // onPlantClick: (PlantAndGardenPlantings) -> Unit
+  onWaterClick: (Plant) -> Unit,
+  onPlantClick: (Plant) -> Unit
 ) {
   // Dimensions
   val cardSideMargin = 12.dp
@@ -45,8 +39,9 @@ fun PlantListItem(
   val nextWateringDate = plant.getNextWateringDateString()
 
   Card(
-    // onClick = { onPlantClick(plant) },
-    modifier = Modifier.padding(start = cardSideMargin, end = cardSideMargin, bottom = 26.dp),
+    onClick = { onPlantClick(plant) },
+    modifier = Modifier
+      .padding(start = cardSideMargin, end = cardSideMargin, bottom = 26.dp),
     backgroundColor = MaterialTheme.colors.secondary,
     contentColor = MaterialTheme.colors.onSecondary,
   ) {
@@ -97,7 +92,11 @@ fun PlantListItem(
       val waterToday = nextWateringDate == "Today"
 
       Button(
-        modifier = Modifier.align(Alignment.CenterHorizontally),
+        modifier = Modifier
+          .align(Alignment.CenterHorizontally)
+          .padding(
+            bottom = marginNormal,
+          ),
         enabled = waterToday,
         onClick = { onWaterClick(plant) }
       ) {
@@ -115,32 +114,7 @@ fun PlantListItem(
           )
         }
       }
-
-      DropdownContextMenu(
-        options,
-        Modifier.contextMenu()
-          .align(AbsoluteAlignment.Right)
-          .padding(
-            bottom = marginNormal
-          ), // remember about padding on the lowest element to maintain margin from bottom!
-        onActionClick
-      )
     }
   }
 }
 
-private fun getDueDateAndTime(plant: Plant): String {
-  val stringBuilder = StringBuilder("")
-
-  if (plant.hasDueDate()) {
-    stringBuilder.append(plant.lastWateringDate)
-    stringBuilder.append(" ")
-  }
-
-  if (plant.hasDueTime()) {
-    stringBuilder.append("at ")
-    stringBuilder.append(plant.dueTime)
-  }
-
-  return stringBuilder.toString()
-}

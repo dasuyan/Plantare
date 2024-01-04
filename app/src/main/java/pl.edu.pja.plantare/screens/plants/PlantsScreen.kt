@@ -29,20 +29,17 @@ import pl.edu.pja.plantare.R.string as AppText
 @ExperimentalMaterialApi
 fun PlantsScreen(openScreen: (String) -> Unit, viewModel: PlantsViewModel = hiltViewModel()) {
   val plants = viewModel.plants.collectAsStateWithLifecycle(emptyList())
-  val options by viewModel.options
+  val context = LocalContext.current
 
   PlantsScreenContent(
     plants = plants.value,
-    options = options,
     onAddClick = viewModel::onAddClick,
     onSettingsClick = viewModel::onSettingsClick,
-    onPlantCheckChange = viewModel::onPlantCheckChange,
     onWaterClick = viewModel::onWaterClick,
-    onPlantActionClick = viewModel::onPlantActionClick,
-    openScreen = openScreen
+    onPlantClick = viewModel::onPlantClick,
+    openScreen = openScreen,
+    context = context
   )
-
-  LaunchedEffect(viewModel) { viewModel.loadPlantOptions() }
 }
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
@@ -51,13 +48,12 @@ fun PlantsScreen(openScreen: (String) -> Unit, viewModel: PlantsViewModel = hilt
 fun PlantsScreenContent(
   modifier: Modifier = Modifier,
   plants: List<Plant>,
-  options: List<String>,
   onAddClick: ((String) -> Unit) -> Unit,
   onSettingsClick: ((String) -> Unit) -> Unit,
-  onWaterClick: (Plant) -> Unit,
-  onPlantCheckChange: (Plant) -> Unit,
-  onPlantActionClick: ((String) -> Unit, Plant, String, Context) -> Unit,
-  openScreen: (String) -> Unit
+  onWaterClick: (Context, Plant) -> Unit,
+  onPlantClick: ((String) -> Unit, Plant) -> Unit,
+  openScreen: (String) -> Unit,
+  context: Context = LocalContext.current
 ) {
   Scaffold(
     floatingActionButton = {
@@ -83,10 +79,10 @@ fun PlantsScreenContent(
 
       PlantList(
         plants = plants,
-        options = options,
-        onPlantActionClick = onPlantActionClick,
-        onWaterClick,
+        onPlantClick = onPlantClick,
+        onWaterClick = onWaterClick,
         openScreen = openScreen,
+        context = context,
         modifier = modifier
       )
     }
@@ -96,14 +92,12 @@ fun PlantsScreenContent(
 @Composable
 private fun PlantList(
   plants: List<Plant>,
-  options: List<String>,
-  onPlantActionClick: ((String) -> Unit, Plant, String, Context) -> Unit,
-  onWaterClick: (Plant) -> Unit,
+  onPlantClick: ((String) -> Unit, Plant) -> Unit,
+  onWaterClick: (Context, Plant) -> Unit,
   openScreen: (String) -> Unit,
-  // onPlantClick: (PlantAndGardenPlantings) -> Unit,
+  context: Context,
   modifier: Modifier = Modifier,
 ) {
-  val context = LocalContext.current
   // Call reportFullyDrawn when the garden list has been rendered
   val gridState = rememberLazyGridState()
   ReportDrawnWhen { gridState.layoutInfo.totalItemsCount > 0 }
@@ -117,10 +111,8 @@ private fun PlantList(
       item {
         PlantListItem(
           plant = plant,
-          options = options,
-          onWaterClick = onWaterClick,
-          onActionClick = { action -> onPlantActionClick(openScreen, plant, action, context) }
-        )
+          onWaterClick = { onWaterClick(context, plant) },
+        ) { onPlantClick(openScreen, plant) }
       }
     }
   }
@@ -130,20 +122,16 @@ private fun PlantList(
 @ExperimentalMaterialApi
 @Composable
 fun PlantsScreenPreview() {
-  val plant = Plant(name = "Plant name", flag = true, completed = true)
-
-  val options = PlantActionOption.getOptions(hasEditOption = true)
+  val plant = Plant(name = "Plant name")
 
   PlantareTheme {
     PlantsScreenContent(
       plants = listOf(plant),
-      options = options,
       onAddClick = {},
       onSettingsClick = {},
-      onPlantCheckChange = {},
-      onWaterClick = {},
-      onPlantActionClick = { _, _, _, _ -> },
-      openScreen = {}
+      onWaterClick = { _, _ -> },
+      openScreen = {},
+      onPlantClick = { _, _ -> }
     )
   }
 }
