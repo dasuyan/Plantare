@@ -26,11 +26,7 @@ import pl.edu.pja.plantare.model.Plant
 
 @OptIn(ExperimentalMaterialApi::class, ExperimentalFoundationApi::class)
 @Composable
-fun PlantListItem(
-  plant: Plant,
-  onWaterClick: (Plant) -> Unit,
-  onPlantClick: (Plant) -> Unit
-) {
+fun PlantListItem(plant: Plant, onWaterClick: (Plant) -> Unit, onPlantClick: (Plant) -> Unit) {
   // Dimensions
   val cardSideMargin = 12.dp
   val marginNormal = 16.dp
@@ -40,8 +36,7 @@ fun PlantListItem(
 
   Card(
     onClick = { onPlantClick(plant) },
-    modifier = Modifier
-      .padding(start = cardSideMargin, end = cardSideMargin, bottom = 26.dp),
+    modifier = Modifier.padding(start = cardSideMargin, end = cardSideMargin, bottom = 26.dp),
     backgroundColor = MaterialTheme.colors.secondary,
     contentColor = MaterialTheme.colors.onSecondary,
   ) {
@@ -92,11 +87,11 @@ fun PlantListItem(
       val waterToday = nextWateringDate == "Today"
 
       Button(
-        modifier = Modifier
-          .align(Alignment.CenterHorizontally)
-          .padding(
-            bottom = marginNormal,
-          ),
+        modifier =
+          Modifier.align(Alignment.CenterHorizontally)
+            .padding(
+              bottom = marginNormal,
+            ),
         enabled = waterToday,
         onClick = { onWaterClick(plant) }
       ) {
@@ -117,4 +112,3 @@ fun PlantListItem(
     }
   }
 }
-

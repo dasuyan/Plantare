@@ -66,7 +66,14 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.SubcomposeAsyncImage
 import coil.request.ImageRequest
 import com.google.android.material.datepicker.MaterialDatePicker
+import java.io.File
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
+import java.util.Objects
 import pl.edu.pja.plantare.BuildConfig
+import pl.edu.pja.plantare.R.drawable as AppIcon
+import pl.edu.pja.plantare.R.string as AppText
 import pl.edu.pja.plantare.common.composable.ActionToolbar
 import pl.edu.pja.plantare.common.composable.BasicField
 import pl.edu.pja.plantare.common.composable.DialogConfirmButton
@@ -77,13 +84,6 @@ import pl.edu.pja.plantare.common.ext.spacer
 import pl.edu.pja.plantare.common.ext.toolbarActions
 import pl.edu.pja.plantare.model.Plant
 import pl.edu.pja.plantare.theme.PlantareTheme
-import java.io.File
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
-import java.util.Objects
-import pl.edu.pja.plantare.R.drawable as AppIcon
-import pl.edu.pja.plantare.R.string as AppText
 
 @Composable
 @ExperimentalMaterialApi
@@ -114,9 +114,7 @@ fun EditPlantScreen(popUpScreen: () -> Unit, viewModel: EditPlantViewModel = hil
 
   if (loading) {
     Box(
-      modifier = Modifier
-        .fillMaxSize()
-        .background(Color.Gray.copy(alpha = 0.3f)),
+      modifier = Modifier.fillMaxSize().background(Color.Gray.copy(alpha = 0.3f)),
       contentAlignment = Alignment.Center
     ) {
       CircularProgressIndicator(color = MaterialTheme.colors.onBackground)
@@ -159,17 +157,15 @@ fun EditPlantScreenContent(
     }
   ) {
     Column(
-      modifier = modifier
-        .fillMaxWidth()
-        .fillMaxHeight()
-        .verticalScroll(rememberScrollState()),
+      modifier = modifier.fillMaxWidth().fillMaxHeight().verticalScroll(rememberScrollState()),
       horizontalAlignment = Alignment.CenterHorizontally
     ) {
-      val title = when (screenMode) {
-        EditPlantScreenMode.ADD -> AppText.add_plant
-        EditPlantScreenMode.EDIT -> AppText.edit_plant
-        EditPlantScreenMode.DETAILS -> AppText.plant_details
-      }
+      val title =
+        when (screenMode) {
+          EditPlantScreenMode.ADD -> AppText.add_plant
+          EditPlantScreenMode.EDIT -> AppText.edit_plant
+          EditPlantScreenMode.DETAILS -> AppText.plant_details
+        }
       ActionToolbar(
         title = title,
         modifier = Modifier.toolbarActions(),
@@ -181,10 +177,8 @@ fun EditPlantScreenContent(
 
       SubcomposeAsyncImage(
         model =
-        ImageRequest.Builder(LocalContext.current).data(plant.imageUri).crossfade(true).build(),
-        modifier = Modifier
-          .padding(16.dp, 8.dp)
-          .clip(MaterialTheme.shapes.medium),
+          ImageRequest.Builder(LocalContext.current).data(plant.imageUri).crossfade(true).build(),
+        modifier = Modifier.padding(16.dp, 8.dp).clip(MaterialTheme.shapes.medium),
         contentDescription = null,
         loading = { LoadingAnimation() }
       )
@@ -202,10 +196,10 @@ fun EditPlantScreenContent(
         onNewValue = onNameChange,
         modifier = fieldModifier,
         keyboardOptions =
-        KeyboardOptions(
-          keyboardType = KeyboardType.Text,
-          capitalization = KeyboardCapitalization.Sentences
-        ),
+          KeyboardOptions(
+            keyboardType = KeyboardType.Text,
+            capitalization = KeyboardCapitalization.Sentences
+          ),
         readOnly = screenMode == EditPlantScreenMode.DETAILS
       )
       BasicField(
@@ -214,10 +208,10 @@ fun EditPlantScreenContent(
         onNewValue = onDescriptionChange,
         modifier = fieldModifier,
         keyboardOptions =
-        KeyboardOptions(
-          keyboardType = KeyboardType.Text,
-          capitalization = KeyboardCapitalization.Sentences
-        ),
+          KeyboardOptions(
+            keyboardType = KeyboardType.Text,
+            capitalization = KeyboardCapitalization.Sentences
+          ),
         readOnly = screenMode == EditPlantScreenMode.DETAILS
       )
       BasicField(
@@ -226,9 +220,9 @@ fun EditPlantScreenContent(
         onNewValue = onWateringFrequencyChange,
         modifier = fieldModifier,
         keyboardOptions =
-        KeyboardOptions(
-          keyboardType = KeyboardType.Number,
-        ),
+          KeyboardOptions(
+            keyboardType = KeyboardType.Number,
+          ),
         readOnly = screenMode == EditPlantScreenMode.DETAILS
       )
 
@@ -248,7 +242,11 @@ fun EditPlantScreenContent(
       if (screenMode == EditPlantScreenMode.DETAILS) {
         OutlinedButton(
           onClick = onDeleteClick,
-          colors = ButtonDefaults.buttonColors(backgroundColor = Color.Transparent, contentColor = Color.Red),
+          colors =
+            ButtonDefaults.buttonColors(
+              backgroundColor = Color.Transparent,
+              contentColor = Color.Red
+            ),
           border = BorderStroke(1.dp, Color.Red)
         ) {
           Text(text = "Delete")
@@ -256,10 +254,7 @@ fun EditPlantScreenContent(
       }
 
       if (isDeleteDialogVisible) {
-        DeleteConfirmationDialog(
-          onDeleteConfirm = onDeleteConfirm,
-          onDeleteCancel = onDeleteCancel
-        )
+        DeleteConfirmationDialog(onDeleteConfirm = onDeleteConfirm, onDeleteCancel = onDeleteCancel)
       }
 
       Spacer(modifier = Modifier.spacer())
@@ -268,19 +263,14 @@ fun EditPlantScreenContent(
 }
 
 @Composable
-fun DeleteConfirmationDialog(
-  onDeleteConfirm: () -> Unit,
-  onDeleteCancel: () -> Unit
-) {
+fun DeleteConfirmationDialog(onDeleteConfirm: () -> Unit, onDeleteCancel: () -> Unit) {
   AlertDialog(
     onDismissRequest = onDeleteCancel,
     title = { Text("Delete Plant") },
     text = { Text("Are you sure you want to delete this plant? This action is permanent!") },
     buttons = {
       Row(
-        modifier = Modifier
-          .fillMaxWidth()
-          .padding(8.dp),
+        modifier = Modifier.fillMaxWidth().padding(8.dp),
         horizontalArrangement = Arrangement.SpaceBetween
       ) {
         DialogConfirmButton(text = AppText.delete_plant_confirm, action = onDeleteConfirm)
@@ -307,11 +297,10 @@ fun LoadingAnimation() {
 
   Box(
     modifier =
-    Modifier
-      .size(60.dp)
-      .scale(progress)
-      .alpha(1f - progress)
-      .border(5.dp, color = MaterialTheme.colors.primary, shape = CircleShape)
+      Modifier.size(60.dp)
+        .scale(progress)
+        .alpha(1f - progress)
+        .border(5.dp, color = MaterialTheme.colors.primary, shape = CircleShape)
   )
 }
 
@@ -354,9 +343,7 @@ fun PhotoTaker(onUrlChange: (String) -> Unit) {
     }
 
   Column(
-    Modifier
-      .fillMaxSize()
-      .padding(10.dp),
+    Modifier.fillMaxSize().padding(10.dp),
     horizontalAlignment = Alignment.CenterHorizontally
   ) {
     Button(
@@ -381,11 +368,7 @@ fun PhotoTaker(onUrlChange: (String) -> Unit) {
 
 @ExperimentalMaterialApi
 @Composable
-private fun CardEditors(
-  plant: Plant,
-  onDateChange: (Long) -> Unit,
-  activity: AppCompatActivity?
-) {
+private fun CardEditors(plant: Plant, onDateChange: (Long) -> Unit, activity: AppCompatActivity?) {
   RegularCardEditor(
     AppText.last_watering_date,
     AppIcon.ic_calendar,

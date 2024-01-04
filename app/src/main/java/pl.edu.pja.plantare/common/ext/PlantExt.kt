@@ -1,13 +1,15 @@
 package pl.edu.pja.plantare.common.ext
 
-import pl.edu.pja.plantare.model.Plant
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
 import java.util.Locale
+import pl.edu.pja.plantare.model.Plant
 
 fun Plant?.getNextWateringDate(): LocalDate {
-  if (this?.lastWateringDate.orEmpty().isBlank() || this?.wateringFrequencyDays.orEmpty().isBlank()) {
+  if (
+    this?.lastWateringDate.orEmpty().isBlank() || this?.wateringFrequencyDays.orEmpty().isBlank()
+  ) {
     return LocalDate.now()
   }
   val convertedLastWateringDate = convertStringToDate(this?.lastWateringDate.orEmpty())
@@ -15,7 +17,9 @@ fun Plant?.getNextWateringDate(): LocalDate {
 }
 
 fun Plant?.getNextWateringDateString(): String {
-  if (this?.lastWateringDate.orEmpty().isBlank() || this?.wateringFrequencyDays.orEmpty().isBlank()) {
+  if (
+    this?.lastWateringDate.orEmpty().isBlank() || this?.wateringFrequencyDays.orEmpty().isBlank()
+  ) {
     return "N/A"
   }
   val convertedLastWateringDate = convertStringToDate(this?.lastWateringDate.orEmpty())

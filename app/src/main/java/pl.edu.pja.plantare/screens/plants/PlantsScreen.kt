@@ -17,13 +17,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import pl.edu.pja.plantare.R.drawable as AppIcon
+import pl.edu.pja.plantare.R.string as AppText
 import pl.edu.pja.plantare.common.composable.ActionToolbar
 import pl.edu.pja.plantare.common.ext.smallSpacer
 import pl.edu.pja.plantare.common.ext.toolbarActions
 import pl.edu.pja.plantare.model.Plant
 import pl.edu.pja.plantare.theme.PlantareTheme
-import pl.edu.pja.plantare.R.drawable as AppIcon
-import pl.edu.pja.plantare.R.string as AppText
 
 @Composable
 @ExperimentalMaterialApi
@@ -112,7 +112,9 @@ private fun PlantList(
         PlantListItem(
           plant = plant,
           onWaterClick = { onWaterClick(context, plant) },
-        ) { onPlantClick(openScreen, plant) }
+        ) {
+          onPlantClick(openScreen, plant)
+        }
       }
     }
   }

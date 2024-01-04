@@ -141,9 +141,7 @@ fun NavGraphBuilder.plantareGraph(appState: PlantareAppState) {
           nullable = false
           defaultValue = EditPlantScreenMode.EDIT.name
         },
-        navArgument(PLANT_ID) {
-          nullable = true
-        }
+        navArgument(PLANT_ID) { nullable = true }
       )
   ) {
     EditPlantScreen(popUpScreen = { appState.popUp() })
