@@ -66,14 +66,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.SubcomposeAsyncImage
 import coil.request.ImageRequest
 import com.google.android.material.datepicker.MaterialDatePicker
-import java.io.File
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
-import java.util.Objects
 import pl.edu.pja.plantare.BuildConfig
-import pl.edu.pja.plantare.R.drawable as AppIcon
-import pl.edu.pja.plantare.R.string as AppText
 import pl.edu.pja.plantare.common.composable.ActionToolbar
 import pl.edu.pja.plantare.common.composable.BasicField
 import pl.edu.pja.plantare.common.composable.DialogConfirmButton
@@ -84,6 +77,13 @@ import pl.edu.pja.plantare.common.ext.spacer
 import pl.edu.pja.plantare.common.ext.toolbarActions
 import pl.edu.pja.plantare.model.Plant
 import pl.edu.pja.plantare.theme.PlantareTheme
+import java.io.File
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
+import java.util.Objects
+import pl.edu.pja.plantare.R.drawable as AppIcon
+import pl.edu.pja.plantare.R.string as AppText
 
 @Composable
 @ExperimentalMaterialApi
@@ -105,10 +105,12 @@ fun EditPlantScreen(popUpScreen: () -> Unit, viewModel: EditPlantViewModel = hil
     plant = plant,
     onDoneClick = { viewModel.onDoneClick(popUpScreen, context) },
     onNameChange = viewModel::onNameChange,
+    onSpeciesChange = viewModel::onSpeciesChange,
     onDescriptionChange = viewModel::onDescriptionChange,
     onWateringFrequencyChange = viewModel::onWateringFrequencyChange,
     onImageUriChange = viewModel::onImageUriChange,
     onDateChange = viewModel::onDateChange,
+    onIdentifyClick = viewModel::onIdentifyClick,
     activity = activity
   )
 
@@ -136,10 +138,12 @@ fun EditPlantScreenContent(
   plant: Plant,
   onDoneClick: () -> Unit,
   onNameChange: (String) -> Unit,
+  onSpeciesChange: (String) -> Unit,
   onDescriptionChange: (String) -> Unit,
   onWateringFrequencyChange: (String) -> Unit,
   onImageUriChange: (String) -> Unit,
   onDateChange: (Long) -> Unit,
+  onIdentifyClick: () -> Unit,
   activity: AppCompatActivity?
 ) {
   Scaffold(
@@ -184,7 +188,9 @@ fun EditPlantScreenContent(
       )
 
       if (screenMode != EditPlantScreenMode.DETAILS) {
-        PhotoTaker(onImageUriChange)
+        PhotoTaker(onImageUriChange = onImageUriChange)
+      } else {
+        Button(onClick = onIdentifyClick) { Text(text = "Identify plant from image") }
       }
 
       Spacer(modifier = Modifier.spacer())
@@ -194,6 +200,18 @@ fun EditPlantScreenContent(
         text = AppText.name,
         value = plant.name,
         onNewValue = onNameChange,
+        modifier = fieldModifier,
+        keyboardOptions =
+          KeyboardOptions(
+            keyboardType = KeyboardType.Text,
+            capitalization = KeyboardCapitalization.Sentences
+          ),
+        readOnly = screenMode == EditPlantScreenMode.DETAILS
+      )
+      BasicField(
+        text = AppText.species,
+        value = plant.species,
+        onNewValue = onSpeciesChange,
         modifier = fieldModifier,
         keyboardOptions =
           KeyboardOptions(
@@ -311,7 +329,7 @@ fun Context.createImageFile(): File {
 }
 
 @Composable
-fun PhotoTaker(onUrlChange: (String) -> Unit) {
+fun PhotoTaker(onImageUriChange: (String) -> Unit) {
   val context = LocalContext.current
   val file = context.createImageFile()
   val uri =
@@ -362,7 +380,7 @@ fun PhotoTaker(onUrlChange: (String) -> Unit) {
   }
 
   if (capturedImageUri.path?.isNotEmpty() == true) {
-    onUrlChange(capturedImageUri.toString())
+    onImageUriChange(capturedImageUri.toString())
   }
 }
 
@@ -405,10 +423,12 @@ fun EditPlantScreenPreview() {
       plant = plant,
       onDoneClick = {},
       onNameChange = {},
+      onSpeciesChange = {},
       onDescriptionChange = {},
       onWateringFrequencyChange = {},
       onImageUriChange = {},
       onDateChange = {},
+      onIdentifyClick = {},
       activity = null
     )
   }

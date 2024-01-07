@@ -33,6 +33,7 @@
     <string name="edit_plant">Edit plant</string>
     <string name="plant_details">Plant details</string>
     <string name="name">Name</string>
+    <string name="species">Species</string>
     <string name="description">Description</string>
     <string name="url">URL</string>
     <string name="watering_frequency">Watering frequency (days)</string>
