@@ -66,7 +66,14 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.SubcomposeAsyncImage
 import coil.request.ImageRequest
 import com.google.android.material.datepicker.MaterialDatePicker
+import java.io.File
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
+import java.util.Objects
 import pl.edu.pja.plantare.BuildConfig
+import pl.edu.pja.plantare.R.drawable as AppIcon
+import pl.edu.pja.plantare.R.string as AppText
 import pl.edu.pja.plantare.common.composable.ActionToolbar
 import pl.edu.pja.plantare.common.composable.BasicField
 import pl.edu.pja.plantare.common.composable.DialogConfirmButton
@@ -77,13 +84,6 @@ import pl.edu.pja.plantare.common.ext.spacer
 import pl.edu.pja.plantare.common.ext.toolbarActions
 import pl.edu.pja.plantare.model.Plant
 import pl.edu.pja.plantare.theme.PlantareTheme
-import java.io.File
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
-import java.util.Objects
-import pl.edu.pja.plantare.R.drawable as AppIcon
-import pl.edu.pja.plantare.R.string as AppText
 
 @Composable
 @ExperimentalMaterialApi

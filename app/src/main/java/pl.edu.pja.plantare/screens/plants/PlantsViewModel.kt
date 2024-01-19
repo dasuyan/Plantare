@@ -2,10 +2,7 @@ package pl.edu.pja.plantare.screens.plants
 
 import android.content.Context
 import dagger.hilt.android.lifecycle.HiltViewModel
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
-import java.util.Locale
-import javax.inject.Inject
+import kotlinx.coroutines.async
 import pl.edu.pja.plantare.EDIT_PLANT_SCREEN
 import pl.edu.pja.plantare.EDIT_PLANT_SCREEN_MODE
 import pl.edu.pja.plantare.PLANT_ID
@@ -17,6 +14,10 @@ import pl.edu.pja.plantare.model.service.StorageService
 import pl.edu.pja.plantare.model.service.impl.AlarmSchedulerServiceImpl
 import pl.edu.pja.plantare.screens.PlantareViewModel
 import pl.edu.pja.plantare.screens.edit_plant.EditPlantScreenMode
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.util.Locale
+import javax.inject.Inject
 
 @HiltViewModel
 class PlantsViewModel
@@ -44,10 +45,19 @@ constructor(logService: LogService, private val storageService: StorageService) 
 
     println("Watering plant: $plant")
     launchCatching {
-      storageService.update(plant.copy(lastWateringDate = LocalDate.now().format(formatter)))
-      if (plant.lastWateringDate.isNotBlank() && plant.wateringFrequencyDays.isNotBlank()) {
-        println("Scheduling alarm for plant: $plant")
-        alarmScheduler.schedule(plant)
+      async {
+          storageService.update(plant.copy(lastWateringDate = LocalDate.now().format(formatter)))
+        }
+        .await()
+
+      val wateredPlant = storageService.getPlant(plant.id)!!
+
+      if (
+        wateredPlant.lastWateringDate.isNotBlank() &&
+          wateredPlant.wateringFrequencyDays.isNotBlank()
+      ) {
+        println("Scheduling alarm for plant: $wateredPlant")
+        alarmScheduler.schedule(wateredPlant)
       }
     }
   }

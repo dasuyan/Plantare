@@ -139,7 +139,9 @@ constructor(
       }
 
       if (
-        editedPlant.lastWateringDate.isNotBlank() && editedPlant.wateringFrequencyDays.isNotBlank()
+        screenMode.value != EditPlantScreenMode.DETAILS &&
+          editedPlant.lastWateringDate.isNotBlank() &&
+          editedPlant.wateringFrequencyDays.isNotBlank()
       ) {
         alarmScheduler.schedule(editedPlant)
       }
